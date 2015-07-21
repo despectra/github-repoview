@@ -1,20 +1,33 @@
 package com.despectra.githubrepoview;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.despectra.githubrepoview.adapters.FriendsAdapter;
+import com.despectra.githubrepoview.loaders.FriendsLoader;
 import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.net.GetFriendsResult;
+
+import java.util.List;
 
 
-public class FriendsActivity extends AppCompatActivity {
+public class FriendsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<GetFriendsResult> {
 
+    private static final int FRIENDS_LOADER_ID = 0;
     private User mCurrentUser;
     private Toolbar mAppBar;
+    private RecyclerView mFriendsView;
+    private FriendsAdapter mFriendsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +39,7 @@ public class FriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends);
         extractViews();
         bindDataToViews();
+        getLoaderManager().initLoader(FRIENDS_LOADER_ID, null, this);
     }
 
     /**
@@ -33,34 +47,37 @@ public class FriendsActivity extends AppCompatActivity {
      */
     private void extractViews() {
         mAppBar = (Toolbar) findViewById(R.id.appbar);
+        mFriendsView = (RecyclerView) findViewById(R.id.friends_view);
+        mFriendsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     /**
-     * Binds user data to necessary views
+     * Binds data to necessary views
      */
     private void bindDataToViews() {
         mAppBar.setTitle(mCurrentUser.getLogin());
+        mFriendsAdapter = new FriendsAdapter();
+        mFriendsView.setAdapter(mFriendsAdapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_friends, menu);
-        return true;
+    public Loader<GetFriendsResult> onCreateLoader(int id, Bundle bundle) {
+        return new FriendsLoader(this);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onLoadFinished(Loader<GetFriendsResult> loader, GetFriendsResult result) {
+        if(result.isSuccess()) {
+            List<User> friends = result.getFriends();
+            mFriendsAdapter.updateList(friends);
+        } else {
+            Toast.makeText(this, result.getError().getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onLoaderReset(Loader<GetFriendsResult> loader) {
+        mFriendsAdapter.updateList(null);
+    }
+
 }
