@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="login_hint">GitHub name</string>
+    <string name="password_hint">Password</string>
+    <string name="login_btn">Login</string>
 </resources>
