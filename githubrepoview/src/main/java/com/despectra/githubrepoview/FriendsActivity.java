@@ -2,26 +2,22 @@ package com.despectra.githubrepoview;
 
 import android.app.LoaderManager;
 import android.content.Loader;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.despectra.githubrepoview.adapters.FriendsAdapter;
 import com.despectra.githubrepoview.loaders.FriendsLoader;
 import com.despectra.githubrepoview.models.User;
-import com.despectra.githubrepoview.net.GetFriendsResult;
+import com.despectra.githubrepoview.net.Error;
 
 import java.util.List;
 
 
-public class FriendsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<GetFriendsResult> {
+public class FriendsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<User>> {
 
     private static final int FRIENDS_LOADER_ID = 0;
     private User mCurrentUser;
@@ -61,22 +57,23 @@ public class FriendsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public Loader<GetFriendsResult> onCreateLoader(int id, Bundle bundle) {
+    public Loader<List<User>> onCreateLoader(int id, Bundle bundle) {
         return new FriendsLoader(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<GetFriendsResult> loader, GetFriendsResult result) {
-        if(result.isSuccess()) {
-            List<User> friends = result.getFriends();
-            mFriendsAdapter.updateList(friends);
+    public void onLoadFinished(Loader<List<User>> loader, List<User> result) {
+        FriendsLoader friendsLoader = (FriendsLoader) loader;
+        if(friendsLoader.loadingSucceeded()) {
+            mFriendsAdapter.updateList(result);
         } else {
-            Toast.makeText(this, result.getError().getMessage(), Toast.LENGTH_SHORT).show();
+            Error error = friendsLoader.getError();
+            Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<GetFriendsResult> loader) {
+    public void onLoaderReset(Loader<List<User>> loader) {
         mFriendsAdapter.updateList(null);
     }
 

@@ -5,7 +5,6 @@ import com.despectra.githubrepoview.models.User;
 import java.util.List;
 
 import retrofit.http.GET;
-import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**

@@ -3,26 +3,23 @@ package com.despectra.githubrepoview;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
-import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.despectra.githubrepoview.loaders.LoginLoader;
-import com.despectra.githubrepoview.net.*;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
 
 /**
  * Simple login activity with 2 fields and 1 button
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<LoginResult> {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<User> {
 
     /**
      * Keys for saving activity state
@@ -144,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @return login loader
      */
     @Override
-    public Loader<LoginResult> onCreateLoader(int id, Bundle bundle) {
+    public Loader<User> onCreateLoader(int id, Bundle bundle) {
         if(BuildConfig.DEBUG && bundle == null) {
             throw new AssertionError("Loader params should not be empty");
         }
@@ -152,19 +149,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onLoadFinished(Loader<LoginResult> loader, LoginResult result) {
-        if (result.isSuccess()) {
+    public void onLoadFinished(Loader<User> loader, User user) {
+        LoginLoader loginLoader = (LoginLoader) loader;
+        if (loginLoader.loadingSucceeded()) {
             launchFriendsActivity();
         } else {
-            Error error = result.getError();
+            Error error = loginLoader.getError();
             Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
         }
         getLoaderManager().destroyLoader(LOADER_ID);
     }
 
     @Override
-    public void onLoaderReset(Loader<LoginResult> loader) {
-
+    public void onLoaderReset(Loader<User> loader) {
     }
 
 }

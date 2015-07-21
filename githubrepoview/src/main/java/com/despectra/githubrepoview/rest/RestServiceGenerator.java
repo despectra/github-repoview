@@ -1,7 +1,5 @@
 package com.despectra.githubrepoview.rest;
 
-import android.util.Base64;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RequestInterceptor;

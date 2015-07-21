@@ -3,7 +3,6 @@ package com.despectra.githubrepoview;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Base64;
 
 import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
