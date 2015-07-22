@@ -22,6 +22,14 @@
             android:name=".FriendsActivity"
             android:label="@string/title_activity_friends" >
         </activity>
+        <activity
+            android:name=".UserReposActivity"
+            android:label="@string/title_activity_user_repos"
+            android:parentActivityName=".FriendsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.despectra.githubrepoview.FriendsActivity" />
+        </activity>
     </application>
 
 </manifest>

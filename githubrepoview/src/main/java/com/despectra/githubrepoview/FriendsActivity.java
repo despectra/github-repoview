@@ -1,23 +1,30 @@
 package com.despectra.githubrepoview;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.despectra.githubrepoview.adapters.FriendsAdapter;
+import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.FriendsLoader;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
+import com.google.gson.Gson;
 
 import java.util.List;
 
-
-public class FriendsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<User>> {
+/**
+ * Activity for displaying list of users friends (followers)
+ */
+public class FriendsActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<List<User>>, ListAdapter.OnAdapterItemClickListener<User> {
 
     private static final int FRIENDS_LOADER_ID = 0;
     private User mCurrentUser;
@@ -34,7 +41,7 @@ public class FriendsActivity extends AppCompatActivity implements LoaderManager.
         }
         setContentView(R.layout.activity_friends);
         extractViews();
-        bindDataToViews();
+        setupViews();
         getLoaderManager().initLoader(FRIENDS_LOADER_ID, null, this);
     }
 
@@ -44,15 +51,16 @@ public class FriendsActivity extends AppCompatActivity implements LoaderManager.
     private void extractViews() {
         mAppBar = (Toolbar) findViewById(R.id.appbar);
         mFriendsView = (RecyclerView) findViewById(R.id.friends_view);
-        mFriendsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
     }
 
     /**
-     * Binds data to necessary views
+     * Simple views setting up
      */
-    private void bindDataToViews() {
+    private void setupViews() {
         mAppBar.setTitle(mCurrentUser.getLogin());
-        mFriendsAdapter = new FriendsAdapter();
+        mFriendsAdapter = new FriendsAdapter(this);
+        mFriendsView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mFriendsView.setAdapter(mFriendsAdapter);
     }
 
@@ -77,4 +85,19 @@ public class FriendsActivity extends AppCompatActivity implements LoaderManager.
         mFriendsAdapter.updateList(null);
     }
 
+    /**
+     * Launches new UserReposActivity
+     * @param item selected user
+     * @param itemView item clicked on
+     * @param position item position in adapter
+     */
+    @Override
+    public void onAdapterItemClick(User item, View itemView, int position) {
+        Intent intent = new Intent(this, UserReposActivity.class);
+        //serialize selected item to JSON
+        Gson gson = new Gson();
+        String userData = gson.toJson(item);
+        intent.putExtra(UserReposActivity.USER_DATA_EXTRA, userData);
+        startActivity(intent);
+    }
 }
