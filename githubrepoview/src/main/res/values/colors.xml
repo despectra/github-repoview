@@ -3,6 +3,7 @@
 
     <color name="primary">@color/md_teal_500</color>
     <color name="primaryDark">@color/md_teal_700</color>
+    <color name="primaryLight">@color/md_teal_100</color>
     <color name="accent">@color/md_purple_600</color>
 
     <!-- google's material design colours from

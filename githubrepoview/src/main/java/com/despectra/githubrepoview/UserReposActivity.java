@@ -2,13 +2,17 @@ package com.despectra.githubrepoview;
 
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,6 +35,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
 
     private User mUser;
 
+    private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbar;
     private ImageView mAvatarView;
     private RecyclerView mReposView;
@@ -60,6 +65,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
     }
 
     private void extractViews() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mAvatarView = (ImageView) findViewById(R.id.ava);
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mReposView = (RecyclerView) findViewById(R.id.repos_view);
@@ -73,13 +79,24 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
                 Picasso.with(UserReposActivity.this)
                         .load(mUser.getAvatarUrl())
                         .resize(0, mAvatarView.getHeight())
-                        //.centerInside()
                         .into(mAvatarView);
                 return true;
             }
         });
         mCollapsingToolbar.setTitle(mUser.getName());
+        mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
+        mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavUtils.navigateUpFromSameTask(UserReposActivity.this);
+            }
+        });
+
         mReposView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mReposView.addItemDecoration(new SimpleDividerItemDecoration(this));
         mReposAdapter = new ReposAdapter(null);
         mReposView.setAdapter(mReposAdapter);
     }

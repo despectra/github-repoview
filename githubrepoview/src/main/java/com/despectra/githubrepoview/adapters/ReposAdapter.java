@@ -11,7 +11,7 @@ import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.models.Repo;
 
 /**
- *
+ * Adapter for rendering list of user repos
  */
 public class ReposAdapter extends ListAdapter<Repo, ReposAdapter.Holder> {
 
