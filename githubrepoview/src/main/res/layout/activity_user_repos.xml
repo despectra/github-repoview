@@ -1,10 +1,8 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.despectra.githubrepoview.UserReposActivity"
-    android:orientation="vertical"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -22,6 +20,7 @@
             app:expandedTitleMarginBottom="32dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -47,6 +46,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/repos_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

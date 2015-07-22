@@ -18,13 +18,12 @@ public class FriendsLoader extends GitHubApiLoader<List<User> > {
         super(context);
     }
 
+    /**
+     * @return null, because loading friends means that we are currently logged in
+     */
     @Override
     protected String provideAuthorizationString() {
-        User currentUser = LoginInfo.getLoggedUser(getContext());
-        if(currentUser == null) {
-            throw new IllegalStateException("Missing current user data in shared prefs");
-        }
-        return LoginInfo.getAuthorization(getContext());
+        return null;
     }
 
     @Override

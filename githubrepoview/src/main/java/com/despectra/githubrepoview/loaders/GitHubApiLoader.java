@@ -3,15 +3,13 @@ package com.despectra.githubrepoview.loaders;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.despectra.githubrepoview.LoginInfo;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
 import com.despectra.githubrepoview.rest.GitHubService;
 import com.despectra.githubrepoview.rest.RestServiceGenerator;
 
 import retrofit.RetrofitError;
-
-/**
- * Created by Андрей on 21.07.2015.
- */
 
 /**
  * Abstract async data loader from GitHub API
@@ -41,8 +39,16 @@ public abstract class GitHubApiLoader<D> extends AsyncTaskLoader<D> {
      */
     @Override
     public D loadInBackground() {
+        String authorization = provideAuthorizationString();
+        if(authorization == null) {
+            User currentUser = LoginInfo.getLoggedUser(getContext());
+            if(currentUser == null) {
+                throw new IllegalStateException("Missing current user data in shared prefs");
+            }
+            authorization = LoginInfo.getAuthorization(getContext());
+        }
         GitHubService gitHubService = RestServiceGenerator.createService(GitHubService.class, GitHubService.BASE_URL,
-                provideAuthorizationString());
+                authorization);
         try {
             mResultData = tryLoadData(gitHubService);
         } catch (RetrofitError error) {
@@ -107,8 +113,8 @@ public abstract class GitHubApiLoader<D> extends AsyncTaskLoader<D> {
     }
 
     /**
-     * Returns auth string for constructing rest service
-     * @return authorization string
+     * Returns custom auth string for constructing rest service
+     * @return authorization string. If null, use default auth string from shared preferences
      */
     protected abstract String provideAuthorizationString();
 

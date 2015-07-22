@@ -1,11 +1,13 @@
 package com.despectra.githubrepoview.rest;
 
+import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 
 import java.util.List;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * retrofit interface that turns into REST client
@@ -22,4 +24,7 @@ public interface GitHubService {
 
     @GET("/users/{username}")
     User getUserInfo(@Path("username") String userName);
+
+    @GET("/users/{username}/repos")
+    List<Repo> getUserRepos(@Path("username") String userName, @Query("sort") String sort);
 }
