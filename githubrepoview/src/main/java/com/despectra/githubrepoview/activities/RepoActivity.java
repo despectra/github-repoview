@@ -28,8 +28,6 @@ public class RepoActivity extends ItemsListActivity<Branch> {
     private User mUser;
     private Repo mRepo;
 
-    private Toolbar mToolbar;
-
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_repo;
@@ -38,7 +36,6 @@ public class RepoActivity extends ItemsListActivity<Branch> {
     @Override
     protected void onContinueOnCreate() {
         extractIntentData();
-        extractViews();
         setupViews();
     }
 
@@ -61,20 +58,16 @@ public class RepoActivity extends ItemsListActivity<Branch> {
         return new BranchesLoader(this, mUser.getLogin(), mRepo.getName());
     }
 
-    private void extractViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-    }
-
     private void setupViews() {
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        getToolbar().setNavigationIcon(R.drawable.ic_arrow_back);
+        getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        mToolbar.setTitle(mRepo.getName());
-        mToolbar.setSubtitle(getRepoStats());
+        getToolbar().setTitle(mRepo.getName());
+        getToolbar().setSubtitle(getRepoStats());
     }
 
     /**

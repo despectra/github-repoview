@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
      */
     private List<D> mObjects;
     /**
+     * Only visible items here
+     */
+    private List<D> mFilteredList = new ArrayList<>();
+    /**
      * Item click listeners
      */
     private OnAdapterItemClickListener<D> mAdapterItemClickListener;
@@ -28,6 +33,8 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
             }
         }
     };
+
+    private String mFilter = "";
 
     public ListAdapter() {
         super();
@@ -43,16 +50,47 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
     }
 
     public D getItemAtPosition(int position) {
-        return mObjects.get(position);
+        return mFilteredList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        if(mObjects == null) {
+        if(mFilteredList == null) {
             return 0;
         }
-        return mObjects.size();
+        return mFilteredList.size();
     }
+
+    public void updateSearchFilter(String filter) {
+        mFilter = filter;
+        filterItems();
+    }
+
+    /**
+     * Refreshes filtered list according to currently set filter string
+     * Notifies adapter after filtering
+     */
+    private void filterItems() {
+        if(mObjects.isEmpty()) {
+            return;
+        }
+        mFilteredList.clear();
+        for(int i = 0; i < mObjects.size(); i++) {
+            D item = mObjects.get(i);
+            if(mFilter.isEmpty() || testFilterPredicate(item, mFilter)) {
+                mFilteredList.add(item);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Checks if the item is visible according to current filter string
+     * @param item item to check
+     * @param filter current filter string
+     * @return true if item contains content acceptable by filter string
+     */
+    protected abstract boolean testFilterPredicate(D item, String filter);
 
     /**
      * Replaces original list in adapter with the new one
@@ -65,7 +103,8 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
             return;
         }
         mObjects = newObjects;
-        notifyItemRangeChanged(0, mObjects.size());
+        mFilteredList.addAll(mObjects);
+        filterItems();
     }
 
     /**

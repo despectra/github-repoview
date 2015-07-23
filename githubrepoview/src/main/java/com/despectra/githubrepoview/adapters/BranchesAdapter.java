@@ -24,6 +24,11 @@ public class BranchesAdapter extends ListAdapter<Branch, BranchesAdapter.Holder>
     }
 
     @Override
+    protected boolean testFilterPredicate(Branch item, String filter) {
+        return item.getName().contains(filter);
+    }
+
+    @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.branch_item, parent, false);
         return new Holder(itemView, mItemClickListener);

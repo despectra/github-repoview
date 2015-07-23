@@ -3,12 +3,17 @@ package com.despectra.githubrepoview.activities;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
 
@@ -21,7 +26,7 @@ import io.realm.RealmObject;
  * @param <D> item type parameter
  */
 public abstract class ItemsListActivity<D extends RealmObject> extends AppCompatActivity
-        implements ListAdapter.OnAdapterItemClickListener<D> {
+        implements ListAdapter.OnAdapterItemClickListener<D>, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
     //loader ids
     public static final int LOCAL_LOADER_ID = 0;
@@ -29,6 +34,8 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
 
     private RecyclerView mItemsView;
     private ListAdapter mItemsAdapter;
+    private Toolbar mToolbar;
+    private SearchView mSearchView;
 
     /**
      * Loader callbacks for both local and network loader
@@ -88,10 +95,23 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
+        setupToolbar();
         setupRecyclerView();
         onContinueOnCreate();
         getLoaderManager().restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCllbacks);
         getLoaderManager().initLoader(NETWORK_LOADER_ID, null, mNetworkLoaderCallbacks);
+    }
+
+    /**
+     * Initialize toolbar behaviour
+     */
+    private void setupToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.inflateMenu(R.menu.main_menu);
+        MenuItem searchItem = mToolbar.getMenu().findItem(R.id.search);
+        MenuItemCompat.setOnActionExpandListener(searchItem, this);
+        mSearchView = (SearchView) searchItem.getActionView();
+        mSearchView.setOnQueryTextListener(this);
     }
 
     /**
@@ -134,6 +154,20 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
     }
 
     /**
+     * @return main toolbar
+     */
+    protected Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    /**
+     * @return toolbar search view
+     */
+    protected SearchView getSearchView() {
+        return mSearchView;
+    }
+
+    /**
      * @return layout id resource for activity
      */
     protected abstract int getLayoutRes();
@@ -169,4 +203,44 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
      * @return network loader
      */
     protected abstract Loader<List<D>> createNetworkLoader();
+
+    /**
+     * Handle search view text submission event
+     * @param query text entered
+     * @return true if event was handled by listened
+     */
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        mItemsAdapter.updateSearchFilter(query);
+        return true;
+    }
+
+    /**
+     * Handle search view text change event
+     * @param newText text entered
+     * @return true if event was handled by listened
+     */
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        mItemsAdapter.updateSearchFilter(newText);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+        onSearchViewExpanded();
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+        onSearchViewCollapsed();
+        return true;
+    }
+
+    protected void onSearchViewExpanded() {
+    }
+
+    protected void onSearchViewCollapsed() {
+    }
 }

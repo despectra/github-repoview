@@ -26,6 +26,11 @@ public class FriendsAdapter extends ListAdapter<User, FriendsAdapter.Holder> {
     }
 
     @Override
+    protected boolean testFilterPredicate(User item, String filter) {
+        return item.getLogin().contains(filter) || item.getName().contains(filter);
+    }
+
+    @Override
     public Holder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_item, viewGroup, false);
         return new Holder(itemView, mItemClickListener);

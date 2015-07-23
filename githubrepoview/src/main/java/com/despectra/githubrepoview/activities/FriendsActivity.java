@@ -23,7 +23,6 @@ import java.util.List;
 public class FriendsActivity extends ItemsListActivity<User> {
 
     private User mCurrentUser;
-    private Toolbar mAppBar;
 
     @Override
     protected void onContinueOnCreate() {
@@ -31,7 +30,6 @@ public class FriendsActivity extends ItemsListActivity<User> {
         if(mCurrentUser == null) {
             throw new IllegalStateException("This activity requires login info in shared preferences");
         }
-        extractViews();
         setupViews();
     }
 
@@ -72,17 +70,10 @@ public class FriendsActivity extends ItemsListActivity<User> {
     }
 
     /**
-     * Extracts views from hierarchy and assigns it to view fields
-     */
-    private void extractViews() {
-        mAppBar = (Toolbar) findViewById(R.id.appbar);
-    }
-
-    /**
      * Simple views setting up
      */
     private void setupViews() {
-        mAppBar.setTitle(mCurrentUser.getLogin());
+        getToolbar().setTitle(mCurrentUser.getLogin());
     }
 
 }

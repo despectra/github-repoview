@@ -31,9 +31,15 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
 
     private User mUser;
 
-    private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbar;
     private ImageView mAvatarView;
+
+    @Override
+    protected void onContinueOnCreate() {
+        extractUserData();
+        extractViews();
+        setupViews();
+    }
 
     /**
      * Deserializes user data provided by startActivity intent extras
@@ -48,7 +54,6 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
     }
 
     private void extractViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mAvatarView = (ImageView) findViewById(R.id.ava);
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
     }
@@ -72,8 +77,8 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
         mCollapsingToolbar.setExpandedTitleColor(Color.WHITE);
         mCollapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
 
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        getToolbar().setNavigationIcon(R.drawable.ic_arrow_back);
+        getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -82,10 +87,15 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
     }
 
     @Override
-    protected void onContinueOnCreate() {
-        extractUserData();
-        extractViews();
-        setupViews();
+    protected void onSearchViewExpanded() {
+        getToolbar().setTitle("");
+        mCollapsingToolbar.setTitle("");
+    }
+
+    @Override
+    protected void onSearchViewCollapsed() {
+        getToolbar().setTitle(mUser.getName());
+        mCollapsingToolbar.setTitle(mUser.getName());
     }
 
     @Override

@@ -24,6 +24,11 @@ public class ReposAdapter extends ListAdapter<Repo, ReposAdapter.Holder> {
     }
 
     @Override
+    protected boolean testFilterPredicate(Repo item, String filter) {
+        return item.getName().contains(filter) || item.getDescription().contains(filter);
+    }
+
+    @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.repo_item, parent, false);
         return new Holder(itemView, mItemClickListener);

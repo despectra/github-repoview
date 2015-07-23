@@ -9,4 +9,6 @@
     <string name="field_empty_error">Field shouldn\'t be empty</string>
     <string name="title_activity_friends">FriendsActivity</string>
     <string name="title_activity_user_repos">UserReposActivity</string>
+    <string name="search">Search</string>
+    <string name="logout">Logout</string>
 </resources>
