@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 

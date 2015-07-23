@@ -8,21 +8,26 @@ import java.util.Map;
 import java.util.Set;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
  * Class for refreshing local cache (realm database)
  * @param <D> type of item
- * @param <PK> type of primary key
+ * @param <K> type of key field
  */
-public abstract class CacheSyncManager<D extends RealmObject, PK> {
+public abstract class CacheSyncManager<D extends RealmObject, K> {
 
     private Realm mRealm;
     private Class<D> mItemClassParameter;
 
     public CacheSyncManager(Class<D> itemClass, Realm realm) {
-        mRealm = realm;
+        mRealm = Realm.getDefaultInstance();
         mItemClassParameter = itemClass;
+    }
+
+    public Realm getRealm() {
+        return mRealm;
     }
 
     /**
@@ -33,28 +38,32 @@ public abstract class CacheSyncManager<D extends RealmObject, PK> {
      * @param localItems Items that are currently available in local database
      */
     public void sync(List<D> networkItems, List<D> localItems) {
-        Map<PK, D> networkItemsMap = getMapFromItemsList(networkItems);
-        Map<PK, D> localItemsMap = getMapFromItemsList(localItems);
+        Map<K, D> networkItemsMap = getMapFromItemsList(networkItems);
+        Map<K, D> localItemsMap = getMapFromItemsList(localItems);
 
-        Set<PK> toUpdate = SetOperations.intersection(networkItemsMap.keySet(), localItemsMap.keySet());
-        Set<PK> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
-        Set<PK> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
+        Set<K> toUpdate = SetOperations.intersection(networkItemsMap.keySet(), localItemsMap.keySet());
+        Set<K> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
+        Set<K> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
 
         mRealm.beginTransaction();
-        for(PK id : toCreate) {
+        for(K id : toCreate) {
             D newItem = mRealm.createObject(mItemClassParameter);
             onCreateLocalItem(newItem, networkItemsMap.get(id));
+            if(localItems instanceof RealmList) {
+                localItems.add(newItem);
+            }
         }
-        for(PK id : toUpdate) {
+        for(K id : toUpdate) {
             D existingFriend = localItemsMap.get(id);
             onUpdateLocalItem(existingFriend, networkItemsMap.get(id));
         }
-        for(PK id : toDelete) {
+        for(K id : toDelete) {
             D deletedUser = localItemsMap.get(id);
             deletedUser.removeFromRealm();
         }
 
         mRealm.commitTransaction();
+        mRealm.close();
     }
 
     /**
@@ -62,8 +71,8 @@ public abstract class CacheSyncManager<D extends RealmObject, PK> {
      * @param items list of items
      * @return mapping
      */
-    private Map<PK, D> getMapFromItemsList(List<D> items) {
-        Map<PK, D> idsMap = new HashMap<>();
+    private Map<K, D> getMapFromItemsList(List<D> items) {
+        Map<K, D> idsMap = new HashMap<>();
         for(D item : items) {
             idsMap.put(getItemPrimaryKey(item), item);
         }
@@ -75,7 +84,7 @@ public abstract class CacheSyncManager<D extends RealmObject, PK> {
      * @param item given item
      * @return value of primary key
      */
-    protected abstract PK getItemPrimaryKey(D item);
+    protected abstract K getItemPrimaryKey(D item);
 
     /**
      * Performs all specific updating operations - assigning fields, calling setters etc.

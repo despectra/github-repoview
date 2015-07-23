@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 import android.util.Base64;

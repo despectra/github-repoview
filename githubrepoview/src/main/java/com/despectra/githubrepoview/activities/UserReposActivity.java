@@ -1,26 +1,20 @@
 package com.despectra.githubrepoview.activities;
 
-import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.despectra.githubrepoview.R;
-import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
-import com.despectra.githubrepoview.loaders.ReposLoader;
+import com.despectra.githubrepoview.loaders.network.ReposLoader;
+import com.despectra.githubrepoview.loaders.local.ReposLocalLoader;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
@@ -31,7 +25,7 @@ import java.util.List;
 /**
  * Activity for displaying short user info and list of his repos
  */
-public class UserReposActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>>,ListAdapter.OnAdapterItemClickListener<Repo> {
+public class UserReposActivity extends ItemsListActivity<Repo> {
 
     public static final String USER_DATA_EXTRA = "userData";
 
@@ -40,19 +34,6 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbar;
     private ImageView mAvatarView;
-    private RecyclerView mReposView;
-
-    private ReposAdapter mReposAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_repos);
-        extractUserData();
-        extractViews();
-        setupViews();
-        getLoaderManager().initLoader(0, null, this);
-    }
 
     /**
      * Deserializes user data provided by startActivity intent extras
@@ -70,7 +51,6 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mAvatarView = (ImageView) findViewById(R.id.ava);
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mReposView = (RecyclerView) findViewById(R.id.repos_view);
     }
 
     /**
@@ -99,31 +79,23 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
                 finish();
             }
         });
-
-        mReposView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mReposView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        mReposAdapter = new ReposAdapter(this);
-        mReposView.setAdapter(mReposAdapter);
     }
 
     @Override
-    public Loader<List<Repo>> onCreateLoader(int id, Bundle params) {
-        return new ReposLoader(this, mUser.getLogin());
+    protected void onContinueOnCreate() {
+        extractUserData();
+        extractViews();
+        setupViews();
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Repo>> loader, List<Repo> repos) {
-        ReposLoader reposLoader = (ReposLoader) loader;
-        if(reposLoader.loadingSucceeded()) {
-            mReposAdapter.updateList(repos);
-        } else {
-            Toast.makeText(this, reposLoader.getError().getMessage(), Toast.LENGTH_LONG).show();
-        }
+    protected int getLayoutRes() {
+        return R.layout.activity_user_repos;
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Repo>> loader) {
-        mReposAdapter.updateList(null);
+    protected ListAdapter createListAdapter() {
+        return new ReposAdapter();
     }
 
     /**
@@ -133,7 +105,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
      * @param position adapter position of clicked item
      */
     @Override
-    public void onAdapterItemClick(Repo item, View itemView, int position) {
+    protected void onItemClick(Repo item, View itemView, int position) {
         Gson gson = Utils.getDefaultGsonInstance();
         String repoData = gson.toJson(item);
         String userData = gson.toJson(mUser);
@@ -141,5 +113,15 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
         intent.putExtra(RepoActivity.USER_DATA_EXTRA, userData);
         intent.putExtra(RepoActivity.REPO_DATA_EXTRA, repoData);
         startActivity(intent);
+    }
+
+    @Override
+    protected Loader<List<Repo>> createLocalLoader() {
+        return new ReposLocalLoader(this, mUser.getLogin());
+    }
+
+    @Override
+    protected Loader<List<Repo>> createNetworkLoader() {
+        return new ReposLoader(this, mUser.getLogin());
     }
 }

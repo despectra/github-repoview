@@ -1,11 +1,17 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.local.BranchesSyncManager;
 import com.despectra.githubrepoview.models.Branch;
+import com.despectra.githubrepoview.models.Repo;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmList;
 
 /**
  * Branches list async loader
@@ -39,6 +45,17 @@ public class BranchesLoader extends GitHubApiLoader<List<Branch>> {
      */
     @Override
     protected List<Branch> tryLoadData(GitHubService restService) {
-        return restService.getRepoBranches(mUserName, mRepoName);
+        List<Branch> branches = restService.getRepoBranches(mUserName, mRepoName);
+        Realm realm = Realm.getDefaultInstance();
+        User user = realm.where(User.class).equalTo("login", mUserName).findFirst();
+        Repo repo = user.getRepos().where().equalTo("name", mRepoName).findFirst();
+        RealmList<Branch> localBranches = repo.getBranches();
+        BranchesSyncManager syncManager = new BranchesSyncManager(Branch.class, realm);
+        try {
+            syncManager.sync(branches, localBranches);
+        } finally {
+            realm.close();
+        }
+        return branches;
     }
 }

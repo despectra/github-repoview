@@ -1,18 +1,12 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.LoginInfo;
-import com.despectra.githubrepoview.SetOperations;
 import com.despectra.githubrepoview.local.FriendsSyncManager;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -56,6 +50,4 @@ public class FriendsLoader extends GitHubApiLoader<List<User> > {
 
         return friends;
     }
-
-
 }

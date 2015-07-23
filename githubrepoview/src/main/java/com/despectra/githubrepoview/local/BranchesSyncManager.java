@@ -25,6 +25,7 @@ public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
     @Override
     protected void onCreateLocalItem(Branch localItem, Branch networkItem) {
+        localItem.setId(getRealm().where(Branch.class).maximumInt("id") + 1);
         localItem.setName(networkItem.getName());
     }
 }

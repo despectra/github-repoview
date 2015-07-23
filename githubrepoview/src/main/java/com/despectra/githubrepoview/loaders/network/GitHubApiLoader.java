@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.network;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;

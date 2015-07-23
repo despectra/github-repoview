@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.local;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -48,7 +48,7 @@ public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
     /**
      * Performs a query to realm database
      * @param realm instance of realm
-     * @return
+     * @return loaded list
      */
     protected abstract List<D> tryLoadData(Realm realm);
 

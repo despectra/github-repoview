@@ -29,9 +29,17 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
         }
     };
 
-    public ListAdapter(OnAdapterItemClickListener<D> itemClickListener) {
+    public ListAdapter() {
         super();
-        mAdapterItemClickListener = itemClickListener;
+    }
+
+    public ListAdapter(OnAdapterItemClickListener<D> itemClickListener) {
+        this();
+        setAdapterItemClickListener(itemClickListener);
+    }
+
+    public void setAdapterItemClickListener(OnAdapterItemClickListener<D> listener) {
+        mAdapterItemClickListener = listener;
     }
 
     public D getItemAtPosition(int position) {

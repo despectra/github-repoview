@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.loaders;
+package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
@@ -26,8 +26,7 @@ public class ReposLocalLoader extends LocalLoader<Repo> {
 
     @Override
     protected List<Repo> tryLoadData(Realm realm) {
-        User user = realm.where(User.class).equalTo("login", mLogin).findFirst();
-        return user.getRepos();
+        return realm.where(User.class).equalTo("login", mLogin).findFirst().getRepos();
     }
 
     @Override

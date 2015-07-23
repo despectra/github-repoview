@@ -15,6 +15,10 @@ import com.despectra.githubrepoview.models.Branch;
  */
 public class BranchesAdapter extends ListAdapter<Branch, BranchesAdapter.Holder> {
 
+    public BranchesAdapter() {
+        super();
+    }
+
     public BranchesAdapter(OnAdapterItemClickListener<Branch> itemClickListener) {
         super(itemClickListener);
     }

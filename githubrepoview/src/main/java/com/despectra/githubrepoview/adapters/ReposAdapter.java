@@ -15,6 +15,10 @@ import com.despectra.githubrepoview.models.Repo;
  */
 public class ReposAdapter extends ListAdapter<Repo, ReposAdapter.Holder> {
 
+    public ReposAdapter() {
+        super();
+    }
+
     public ReposAdapter(OnAdapterItemClickListener<Repo> itemClickListener) {
         super(itemClickListener);
     }

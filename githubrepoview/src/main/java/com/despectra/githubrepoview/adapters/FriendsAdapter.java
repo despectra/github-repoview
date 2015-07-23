@@ -17,6 +17,10 @@ import com.squareup.picasso.Picasso;
  */
 public class FriendsAdapter extends ListAdapter<User, FriendsAdapter.Holder> {
 
+    public FriendsAdapter() {
+        super();
+    }
+
     public FriendsAdapter(OnAdapterItemClickListener<User> itemClickListener) {
         super(itemClickListener);
     }
