@@ -1,6 +1,7 @@
 package com.despectra.githubrepoview;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
 import com.despectra.githubrepoview.loaders.ReposLoader;
 import com.despectra.githubrepoview.models.Repo;
@@ -29,7 +31,7 @@ import java.util.List;
 /**
  * Activity for displaying short user info and list of his repos
  */
-public class UserReposActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>> {
+public class UserReposActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repo>>,ListAdapter.OnAdapterItemClickListener<Repo> {
 
     public static final String USER_DATA_EXTRA = "userData";
 
@@ -71,6 +73,9 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
         mReposView = (RecyclerView) findViewById(R.id.repos_view);
     }
 
+    /**
+     * prepare views for their work
+     */
     private void setupViews() {
         //load avatar image in header only after layout happened
         mAvatarView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -97,7 +102,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
 
         mReposView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mReposView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        mReposAdapter = new ReposAdapter(null);
+        mReposAdapter = new ReposAdapter(this);
         mReposView.setAdapter(mReposAdapter);
     }
 
@@ -119,5 +124,22 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<List<Repo>> loader) {
         mReposAdapter.updateList(null);
+    }
+
+    /**
+     * Launches repo activity with selected repo
+     * @param item clicked object
+     * @param itemView clicked view
+     * @param position adapter position of clicked item
+     */
+    @Override
+    public void onAdapterItemClick(Repo item, View itemView, int position) {
+        Gson gson = new Gson();
+        String repoData = gson.toJson(item);
+        String userData = gson.toJson(mUser);
+        Intent intent = new Intent(this, RepoActivity.class);
+        intent.putExtra(RepoActivity.USER_DATA_EXTRA, userData);
+        intent.putExtra(RepoActivity.REPO_DATA_EXTRA, repoData);
+        startActivity(intent);
     }
 }

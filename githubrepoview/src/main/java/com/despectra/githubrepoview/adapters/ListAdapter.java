@@ -65,6 +65,12 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
      * @param <D> Type of list item
      */
     public interface OnAdapterItemClickListener<D> {
+        /**
+         * Handles adapter item click event
+         * @param item clicked object
+         * @param itemView clicked view
+         * @param position adapter position of clicked item
+         */
         void onAdapterItemClick(D item, View itemView, int position);
     }
 }

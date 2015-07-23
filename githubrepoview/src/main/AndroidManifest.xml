@@ -30,6 +30,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.despectra.githubrepoview.FriendsActivity" />
         </activity>
+        <activity
+            android:name=".RepoActivity"
+            android:parentActivityName=".UserReposActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.despectra.githubrepoview.UserReposActivity" />
+        </activity>
     </application>
 
 </manifest>

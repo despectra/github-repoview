@@ -1,5 +1,6 @@
 package com.despectra.githubrepoview.rest;
 
+import com.despectra.githubrepoview.models.Branch;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 
@@ -27,4 +28,7 @@ public interface GitHubService {
 
     @GET("/users/{username}/repos")
     List<Repo> getUserRepos(@Path("username") String userName, @Query("sort") String sort);
+
+    @GET("/repos/{username}/{reponame}/branches")
+    List<Branch> getRepoBranches(@Path("username") String userName, @Path("reponame") String repoName);
 }
