@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview;
+package com.despectra.githubrepoview.activities;
 
 import android.app.LoaderManager;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.BuildConfig;
+import com.despectra.githubrepoview.LoginInfo;
+import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.loaders.LoginLoader;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;

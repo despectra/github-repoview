@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview;
+package com.despectra.githubrepoview.activities;
 
 import android.app.LoaderManager;
 import android.content.Intent;
@@ -11,9 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.LoginInfo;
+import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.FriendsAdapter;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.FriendsLoader;
+import com.despectra.githubrepoview.loaders.FriendsLocalLoader;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
 import com.google.gson.Gson;
@@ -24,13 +28,52 @@ import java.util.List;
  * Activity for displaying list of users friends (followers)
  */
 public class FriendsActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<User>>, ListAdapter.OnAdapterItemClickListener<User> {
+        implements ListAdapter.OnAdapterItemClickListener<User> {
 
-    private static final int FRIENDS_LOADER_ID = 0;
+    private static final int LOCAL_LOADER_ID = 0;
+    public static final int NETWORK_LOADER_ID = 1;
+
     private User mCurrentUser;
     private Toolbar mAppBar;
     private RecyclerView mFriendsView;
     private FriendsAdapter mFriendsAdapter;
+
+    private LoaderManager.LoaderCallbacks<List<User>> mLocalLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<User>>() {
+        @Override
+        public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
+            return new FriendsLocalLoader(FriendsActivity.this);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<User>> loader, List<User> users) {
+            mFriendsAdapter.updateList(users);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<User>> loader) {
+            mFriendsAdapter.updateList(null);
+        }
+    };
+    private LoaderManager.LoaderCallbacks<List<User>> mNetworkLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<User>>() {
+        @Override
+        public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
+            return new FriendsLoader(FriendsActivity.this);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<User>> loader, List<User> users) {
+            FriendsLoader friendsLoader = (FriendsLoader) loader;
+            if (friendsLoader.loadingSucceeded()) {
+                FriendsActivity.this.getLoaderManager().restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCallbacks);
+            } else {
+                Toast.makeText(FriendsActivity.this, friendsLoader.getError().getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<User>> loader) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +85,8 @@ public class FriendsActivity extends AppCompatActivity
         setContentView(R.layout.activity_friends);
         extractViews();
         setupViews();
-        getLoaderManager().initLoader(FRIENDS_LOADER_ID, null, this);
+        getLoaderManager().initLoader(LOCAL_LOADER_ID, null, mLocalLoaderCallbacks);
+        getLoaderManager().initLoader(NETWORK_LOADER_ID, null, mNetworkLoaderCallbacks);
     }
 
     /**
@@ -64,27 +108,6 @@ public class FriendsActivity extends AppCompatActivity
         mFriendsView.setAdapter(mFriendsAdapter);
     }
 
-    @Override
-    public Loader<List<User>> onCreateLoader(int id, Bundle bundle) {
-        return new FriendsLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<User>> loader, List<User> result) {
-        FriendsLoader friendsLoader = (FriendsLoader) loader;
-        if(friendsLoader.loadingSucceeded()) {
-            mFriendsAdapter.updateList(result);
-        } else {
-            Error error = friendsLoader.getError();
-            Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<User>> loader) {
-        mFriendsAdapter.updateList(null);
-    }
-
     /**
      * Launches new UserReposActivity
      * @param item selected user
@@ -95,7 +118,7 @@ public class FriendsActivity extends AppCompatActivity
     public void onAdapterItemClick(User item, View itemView, int position) {
         Intent intent = new Intent(this, UserReposActivity.class);
         //serialize selected item to JSON
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         String userData = gson.toJson(item);
         intent.putExtra(UserReposActivity.USER_DATA_EXTRA, userData);
         startActivity(intent);

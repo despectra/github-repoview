@@ -24,7 +24,7 @@ public class LoginInfo {
      */
     public static void persistLoggedUser(Context context, User user, String basicAuthorization) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         String userData = gson.toJson(user);
         preferences.edit()
                 .putString(USER_DATA_KEY, userData)
@@ -49,7 +49,7 @@ public class LoginInfo {
      */
     public static User getLoggedUser(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         String userData = preferences.getString(USER_DATA_KEY, null);
         if(userData == null) {
             return null;

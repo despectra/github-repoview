@@ -2,9 +2,12 @@ package com.despectra.githubrepoview.models;
 
 import com.google.gson.annotations.Expose;
 
-public class Branch {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @Expose
+public class Branch extends RealmObject {
+
+    @PrimaryKey
     private String name;
 
     /**
@@ -25,4 +28,9 @@ public class Branch {
         this.name = name;
     }
 
+    public static Branch copy(Branch branch) {
+        Branch copiedBranch = new Branch();
+        copiedBranch.setName(branch.getName());
+        return copiedBranch;
+    }
 }

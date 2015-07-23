@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.despectra.githubrepoview.FriendsActivity"
+    tools:context="com.despectra.githubrepoview.activities.FriendsActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="@color/primary" />
+        android:background="@color/primary"
+        android:elevation="@dimen/appbar_elevation"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friends_view"

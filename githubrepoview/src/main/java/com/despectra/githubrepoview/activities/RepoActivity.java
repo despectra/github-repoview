@@ -1,18 +1,18 @@
-package com.despectra.githubrepoview;
+package com.despectra.githubrepoview.activities;
 
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.SimpleDividerItemDecoration;
+import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.BranchesAdapter;
 import com.despectra.githubrepoview.loaders.BranchesLoader;
 import com.despectra.githubrepoview.models.Branch;
@@ -78,7 +78,7 @@ public class RepoActivity extends AppCompatActivity implements LoaderManager.Loa
         if (userData == null || repoData == null) {
             throw new IllegalStateException("Missing intent extras");
         }
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         mRepo = gson.fromJson(repoData, Repo.class);
         mUser = gson.fromJson(userData, User.class);
     }

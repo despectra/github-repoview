@@ -3,44 +3,30 @@ package com.despectra.githubrepoview.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Repo {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    @Expose
-    private int id;
-    @Expose
+public class Repo extends RealmObject {
+
+    @PrimaryKey
+    private long id;
     private String name;
-    @Expose
     private String description;
-    @SerializedName("html_url")
-    @Expose
-    private String htmlUrl;
-    @Expose
-    private Object language;
     @SerializedName("forks_count")
-    @Expose
     private int forksCount;
     @SerializedName("stargazers_count")
-    @Expose
     private int stargazersCount;
     @SerializedName("watchers_count")
-    @Expose
     private int watchersCount;
-    @SerializedName("pushed_at")
-    @Expose
-    private String pushedAt;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
+    private RealmList<Branch> branches;
 
     /**
      *
      * @return
      * The id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -49,7 +35,7 @@ public class Repo {
      * @param id
      * The id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -87,42 +73,6 @@ public class Repo {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     *
-     * @return
-     * The htmlUrl
-     */
-    public String getHtmlUrl() {
-        return htmlUrl;
-    }
-
-    /**
-     *
-     * @param htmlUrl
-     * The html_url
-     */
-    public void setHtmlUrl(String htmlUrl) {
-        this.htmlUrl = htmlUrl;
-    }
-
-    /**
-     *
-     * @return
-     * The language
-     */
-    public Object getLanguage() {
-        return language;
-    }
-
-    /**
-     *
-     * @param language
-     * The language
-     */
-    public void setLanguage(Object language) {
-        this.language = language;
     }
 
     /**
@@ -179,58 +129,27 @@ public class Repo {
         this.watchersCount = watchersCount;
     }
 
-    /**
-     *
-     * @return
-     * The pushedAt
-     */
-    public String getPushedAt() {
-        return pushedAt;
+
+    public RealmList<Branch> getBranches() {
+        return branches;
     }
 
-    /**
-     *
-     * @param pushedAt
-     * The pushed_at
-     */
-    public void setPushedAt(String pushedAt) {
-        this.pushedAt = pushedAt;
+    public void setBranches(RealmList<Branch> branches) {
+        this.branches = branches;
     }
 
-    /**
-     *
-     * @return
-     * The createdAt
-     */
-    public String getCreatedAt() {
-        return createdAt;
+    public static Repo copy(Repo repo) {
+        Repo copiedRepo = new Repo();
+        fillRepoPrimitives(copiedRepo, repo);
+        return copiedRepo;
     }
 
-    /**
-     *
-     * @param createdAt
-     * The created_at
-     */
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    private static void fillRepoPrimitives(Repo targetRepo, Repo from) {
+        targetRepo.setId(from.getId());
+        targetRepo.setName(from.getName());
+        targetRepo.setDescription(from.getDescription());
+        targetRepo.setForksCount(from.getForksCount());
+        targetRepo.setStargazersCount(from.getStargazersCount());
+        targetRepo.setWatchersCount(from.getWatchersCount());
     }
-
-    /**
-     *
-     * @return
-     * The updatedAt
-     */
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     *
-     * @param updatedAt
-     * The updated_at
-     */
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 }

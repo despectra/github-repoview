@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview;
+package com.despectra.githubrepoview.activities;
 
 import android.app.LoaderManager;
 import android.content.Intent;
@@ -6,18 +6,18 @@ import android.content.Loader;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.SimpleDividerItemDecoration;
+import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
 import com.despectra.githubrepoview.loaders.ReposLoader;
@@ -62,7 +62,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
         if (userData == null) {
             throw new IllegalStateException("Missing user data extra");
         }
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         mUser = gson.fromJson(userData, User.class);
     }
 
@@ -96,7 +96,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavUtils.navigateUpFromSameTask(UserReposActivity.this);
+                finish();
             }
         });
 
@@ -134,7 +134,7 @@ public class UserReposActivity extends AppCompatActivity implements LoaderManage
      */
     @Override
     public void onAdapterItemClick(Repo item, View itemView, int position) {
-        Gson gson = new Gson();
+        Gson gson = Utils.getDefaultGsonInstance();
         String repoData = gson.toJson(item);
         String userData = gson.toJson(mUser);
         Intent intent = new Intent(this, RepoActivity.class);

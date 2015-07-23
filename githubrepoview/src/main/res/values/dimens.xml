@@ -5,4 +5,5 @@
     <dimen name="item_icon_width">40dp</dimen>
     <dimen name="item_icon_height">40dp</dimen>
     <dimen name="extended_appbar_height">128dp</dimen>
+    <dimen name="appbar_elevation">8dp</dimen>
 </resources>

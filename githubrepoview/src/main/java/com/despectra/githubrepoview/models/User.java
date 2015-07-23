@@ -3,26 +3,28 @@ package com.despectra.githubrepoview.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * User model class
  */
-public class User {
+public class User extends RealmObject {
 
-    @Expose
+    @PrimaryKey
+    private long id;
     private String login;
-    @Expose
-    private int id;
     @SerializedName("avatar_url")
-    @Expose
     private String avatarUrl;
-    @Expose
     private String name;
-    @Expose
     private String company;
-    @Expose
     private String location;
-    @Expose
     private String email;
+
+
+
+    private RealmList<Repo> repos;
 
     /**
      *
@@ -47,7 +49,7 @@ public class User {
      * @return
      * The id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -56,7 +58,7 @@ public class User {
      * @param id
      * The id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -148,6 +150,30 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public RealmList<Repo> getRepos() {
+        return repos;
+    }
+
+    public void setRepos(RealmList<Repo> repos) {
+        this.repos = repos;
+    }
+
+    public static User copy(User user) {
+        User copiedUser = new User();
+        fillUserPrimitives(copiedUser, user);
+        return copiedUser;
+    }
+
+    public static void fillUserPrimitives(User targetItem, User from) {
+        targetItem.setId(from.getId());
+        targetItem.setLogin(from.getLogin());
+        targetItem.setName(from.getName());
+        targetItem.setEmail(from.getEmail());
+        targetItem.setLocation(from.getLocation());
+        targetItem.setCompany(from.getCompany());
+        targetItem.setAvatarUrl(from.getAvatarUrl());
     }
 
 }
