@@ -1,6 +1,7 @@
 package com.despectra.githubrepoview.activities;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -13,12 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.App;
+import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
 
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 
 /**
@@ -107,11 +111,41 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
      */
     private void setupToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         mToolbar.inflateMenu(R.menu.main_menu);
         MenuItem searchItem = mToolbar.getMenu().findItem(R.id.search);
         MenuItemCompat.setOnActionExpandListener(searchItem, this);
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setOnQueryTextListener(this);
+
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.logout:
+                        performLogout();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Logout action implementation
+     * Removes all user credentials from shared preferences, clears local cache and switches to LoginActivity
+     */
+    private void performLogout() {
+        LoginInfo.clearLoggedUser(this);
+
+        getLoaderManager().destroyLoader(LOCAL_LOADER_ID);
+        getLoaderManager().destroyLoader(NETWORK_LOADER_ID);
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     /**

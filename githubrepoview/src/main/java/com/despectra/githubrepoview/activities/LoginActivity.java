@@ -12,12 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.App;
 import com.despectra.githubrepoview.BuildConfig;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.loaders.network.LoginLoader;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
+
+import io.realm.Realm;
 
 /**
  * Simple login activity with 2 fields and 1 button
@@ -130,6 +133,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Launches main activity after successful login
      */
     private void launchFriendsActivity() {
+        App app = (App) getApplication();
+        Realm.deleteRealm(app.getDefaultRealmConfiguration());
+
         Intent intent = new Intent(this, FriendsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

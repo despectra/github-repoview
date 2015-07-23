@@ -31,7 +31,7 @@ public class ReposSyncManager extends CacheSyncManager<Repo, Long> {
     private void fillFromNetwork(Repo localItem, Repo networkItem) {
         localItem.setId(networkItem.getId());
         localItem.setName(networkItem.getName());
-        localItem.setDescription(networkItem.getDescription());
+        localItem.setDescription(networkItem.getDescription() != null ? networkItem.getDescription() : "");
         localItem.setForksCount(networkItem.getForksCount());
         localItem.setStargazersCount(networkItem.getStargazersCount());
         localItem.setWatchersCount(networkItem.getWatchersCount());
