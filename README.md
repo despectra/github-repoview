@@ -8,8 +8,22 @@ This android app allows you to see the lists of your friends repositories
 * All loaded data is cached so you can browse lists even without internet connection
 * Simple material design theme
 * Lists filtering feature using search input in appbar
+
 ## Workflow
 Open app and enter your github login and password
-![alt text][logo]
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/login.png "Login")
 
-[logo]: https://github.com/despectra/github-repoview/raw/master/screenshots/login.png "Logo Title Text 2"
+After that you will see the list of your friends (followers)
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friends_list.png "Friends")
+
+Select any  friend and app will show you his repos
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friend_repos_list.png "Repos")
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friend_repos_list2.png "Repos2")
+
+Select repository from list ad you will see the list of branches of this repo
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/repo_branches_list.png "Branches")
+
+You can also filter these lists using search button in appbar
+![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/filtering.png "Filter")
+
+
