@@ -2,7 +2,7 @@ package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.local.ReposSyncManager;
+import com.despectra.githubrepoview.cache.ReposSyncManager;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
@@ -11,7 +11,6 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
 /**
  * User repos async loader

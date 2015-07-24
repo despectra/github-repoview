@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.local;
+package com.despectra.githubrepoview.cache;
 
 import com.despectra.githubrepoview.models.Branch;
 
@@ -25,6 +25,7 @@ public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
     @Override
     protected void onCreateLocalItem(Branch localItem, Branch networkItem) {
+        //generate id manually because GitHub API doesn't provide id for branch
         localItem.setId(getRealm().where(Branch.class).maximumInt("id") + 1);
         localItem.setName(networkItem.getName());
     }

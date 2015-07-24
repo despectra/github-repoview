@@ -1,7 +1,6 @@
 package com.despectra.githubrepoview.activities;
 
 import android.content.Loader;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.despectra.githubrepoview.R;
@@ -9,8 +8,8 @@ import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.BranchesAdapter;
 import com.despectra.githubrepoview.adapters.ListAdapter;
-import com.despectra.githubrepoview.loaders.network.BranchesLoader;
 import com.despectra.githubrepoview.loaders.local.BranchesLocalLoader;
+import com.despectra.githubrepoview.loaders.network.BranchesLoader;
 import com.despectra.githubrepoview.models.Branch;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;

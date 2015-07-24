@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -14,8 +13,8 @@ import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
-import com.despectra.githubrepoview.loaders.network.ReposLoader;
 import com.despectra.githubrepoview.loaders.local.ReposLocalLoader;
+import com.despectra.githubrepoview.loaders.network.ReposLoader;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
@@ -89,16 +88,22 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
         getItemsView().addItemDecoration(new SimpleDividerItemDecoration(this));
     }
 
+    /**
+     * Hide toolbar title manually
+     */
     @Override
     protected void onSearchViewExpanded() {
-        getToolbar().setTitle("");
         mCollapsingToolbar.setTitle("");
+        getToolbar().setTitle("");
     }
 
+    /**
+     * Show toolbar title manually
+     */
     @Override
     protected void onSearchViewCollapsed() {
-        getToolbar().setTitle(mUser.getName());
         mCollapsingToolbar.setTitle(mUser.getName());
+        getToolbar().setTitle(mUser.getName());
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.local.FriendsSyncManager;
+import com.despectra.githubrepoview.cache.FriendsSyncManager;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 

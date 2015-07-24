@@ -166,14 +166,19 @@ public class User extends RealmObject {
         return copiedUser;
     }
 
-    public static void fillUserPrimitives(User targetItem, User from) {
-        targetItem.setId(from.getId());
-        targetItem.setLogin(from.getLogin());
-        targetItem.setName(from.getName());
-        targetItem.setEmail(from.getEmail());
-        targetItem.setLocation(from.getLocation());
-        targetItem.setCompany(from.getCompany());
-        targetItem.setAvatarUrl(from.getAvatarUrl());
+    /**
+     * Just fill primitive only values of targetUser with values of from
+     * @param targetUser user that will be filled
+     * @param from user which will give the values
+     */
+    public static void fillUserPrimitives(User targetUser, User from) {
+        targetUser.setId(from.getId());
+        targetUser.setLogin(from.getLogin());
+        targetUser.setName(from.getName());
+        targetUser.setEmail(from.getEmail());
+        targetUser.setLocation(from.getLocation());
+        targetUser.setCompany(from.getCompany());
+        targetUser.setAvatarUrl(from.getAvatarUrl());
     }
 
 }

@@ -10,17 +10,20 @@ import android.graphics.Shader;
 
 import com.squareup.picasso.Transformation;
 
-// enables hardware accelerated rounded corners
+// enables hardware accelerated rounded corners for Picasso
 // original idea here : http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/
 public class RoundedTransformation implements Transformation {
-    private final int radius;
-    private final int margin;  // dp
+    private final int mRadius;
+    private final int mMargin;  // dp
+
+    private final String mKey;
 
     // radius is corner radii in dp
     // margin is the board in dp
     public RoundedTransformation(final int radius, final int margin) {
-        this.radius = radius;
-        this.margin = margin;
+        mRadius = radius;
+        mMargin = margin;
+        mKey = "rounded(radius=" + mRadius + ", margin=" + mMargin + ")";
     }
 
     @Override
@@ -31,7 +34,10 @@ public class RoundedTransformation implements Transformation {
 
         Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
-        canvas.drawRoundRect(new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin), radius, radius, paint);
+        canvas.drawRoundRect(
+                new RectF(mMargin, mMargin, source.getWidth() - mMargin, source.getHeight() - mMargin),
+                mRadius, mRadius, paint
+        );
 
         if (source != output) {
             source.recycle();
@@ -42,6 +48,6 @@ public class RoundedTransformation implements Transformation {
 
     @Override
     public String key() {
-        return "rounded";
+        return mKey;
     }
 }

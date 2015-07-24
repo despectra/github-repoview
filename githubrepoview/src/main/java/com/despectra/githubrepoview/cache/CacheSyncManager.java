@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.local;
+package com.despectra.githubrepoview.cache;
 
 import com.despectra.githubrepoview.SetOperations;
 
@@ -18,11 +18,18 @@ import io.realm.RealmObject;
  */
 public abstract class CacheSyncManager<D extends RealmObject, K> {
 
+    /**
+     * Realm instance to perform write operations
+     */
     private Realm mRealm;
+
+    /**
+     * Item class to instantiate items instances
+     */
     private Class<D> mItemClassParameter;
 
     public CacheSyncManager(Class<D> itemClass, Realm realm) {
-        mRealm = Realm.getDefaultInstance();
+        mRealm = realm;
         mItemClassParameter = itemClass;
     }
 
@@ -41,11 +48,13 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
         Map<K, D> networkItemsMap = getMapFromItemsList(networkItems);
         Map<K, D> localItemsMap = getMapFromItemsList(localItems);
 
+        //simple sets operations helps a lot
         Set<K> toUpdate = SetOperations.intersection(networkItemsMap.keySet(), localItemsMap.keySet());
         Set<K> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
         Set<K> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
 
         mRealm.beginTransaction();
+        //create new
         for(K id : toCreate) {
             D newItem = mRealm.createObject(mItemClassParameter);
             onCreateLocalItem(newItem, networkItemsMap.get(id));
@@ -53,10 +62,12 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
                 localItems.add(newItem);
             }
         }
+        //update existing
         for(K id : toUpdate) {
             D existingFriend = localItemsMap.get(id);
             onUpdateLocalItem(existingFriend, networkItemsMap.get(id));
         }
+        //delete non-existing
         for(K id : toDelete) {
             D deletedUser = localItemsMap.get(id);
             deletedUser.removeFromRealm();
@@ -67,7 +78,7 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
     }
 
     /**
-     * Creates a mapping PrimaryKey -> Item from a list of items
+     * Creates a mapping KeyFieldValue -> Item from a list of items
      * @param items list of items
      * @return mapping
      */

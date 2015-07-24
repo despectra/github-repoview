@@ -138,16 +138,26 @@ public class Repo extends RealmObject {
         this.branches = branches;
     }
 
+    /**
+     * Creates a new Repo instance with values filled from given repo
+     * @param repo given repo
+     * @return new repo
+     */
     public static Repo copy(Repo repo) {
         Repo copiedRepo = new Repo();
         fillRepoPrimitives(copiedRepo, repo);
         return copiedRepo;
     }
 
-    private static void fillRepoPrimitives(Repo targetRepo, Repo from) {
+    /**
+     * Just fill primitive only values of targetRepo with values of from
+     * @param targetRepo repo that will be filled
+     * @param from repo which will give the values
+     */
+    public static void fillRepoPrimitives(Repo targetRepo, Repo from) {
         targetRepo.setId(from.getId());
         targetRepo.setName(from.getName());
-        targetRepo.setDescription(from.getDescription());
+        targetRepo.setDescription(from.getDescription() != null ? from.getDescription() : "");
         targetRepo.setForksCount(from.getForksCount());
         targetRepo.setStargazersCount(from.getStargazersCount());
         targetRepo.setWatchersCount(from.getWatchersCount());

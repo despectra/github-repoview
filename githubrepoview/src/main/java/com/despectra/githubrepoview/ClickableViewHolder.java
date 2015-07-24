@@ -27,7 +27,15 @@ public abstract class ClickableViewHolder extends RecyclerView.ViewHolder {
         mListener = listener;
     }
 
+    /**
+     * Listener interface
+     */
     public interface OnItemClickListener {
+        /**
+         * handles item click event
+         * @param itemView clicked item
+         * @param position adapter position of clicked item
+         */
         void onItemClick(View itemView, int position);
     }
 }

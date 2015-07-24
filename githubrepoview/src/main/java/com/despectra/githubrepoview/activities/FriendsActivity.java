@@ -2,7 +2,6 @@ package com.despectra.githubrepoview.activities;
 
 import android.content.Intent;
 import android.content.Loader;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.despectra.githubrepoview.LoginInfo;
@@ -10,8 +9,8 @@ import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.FriendsAdapter;
 import com.despectra.githubrepoview.adapters.ListAdapter;
-import com.despectra.githubrepoview.loaders.network.FriendsLoader;
 import com.despectra.githubrepoview.loaders.local.FriendsLocalLoader;
+import com.despectra.githubrepoview.loaders.network.FriendsLoader;
 import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
 

@@ -40,6 +40,7 @@ public class BranchesAdapter extends ListAdapter<Branch, BranchesAdapter.Holder>
         TextView textView = holder.getTextView();
         textView.setText(branch.getName());
         if(branch.getName().equals("master")) {
+            //highlight master branch
             textView.setTextColor(textView.getContext().getResources().getColor(R.color.md_green_800));
         } else {
             textView.setTextColor(Color.BLACK);

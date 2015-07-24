@@ -2,7 +2,7 @@ package com.despectra.githubrepoview.loaders.network;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.local.BranchesSyncManager;
+import com.despectra.githubrepoview.cache.BranchesSyncManager;
 import com.despectra.githubrepoview.models.Branch;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;

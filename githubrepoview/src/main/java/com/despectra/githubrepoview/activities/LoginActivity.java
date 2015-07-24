@@ -18,7 +18,7 @@ import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.loaders.network.LoginLoader;
 import com.despectra.githubrepoview.models.User;
-import com.despectra.githubrepoview.net.Error;
+import com.despectra.githubrepoview.loaders.Error;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import io.realm.Realm;
@@ -118,6 +118,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mProgressWheel.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Launches LoginLoader with login and password strings from input fields
+     */
     private void runLoginLoader() {
         String login = mLoginEdit.getText().toString();
         String password = mPasswordEdit.getText().toString();
@@ -138,6 +141,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return loginValid && passwordValid;
     }
 
+    /**
+     * Clear local database after logging in
+     */
     private void prepareDatabase() {
         App app = (App) getApplication();
         Realm.deleteRealm(app.getDefaultRealmConfiguration());
@@ -168,6 +174,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return new LoginLoader(this, bundle.getString(LOADER_PARAM_LOGIN), bundle.getString(LOADER_PARAM_PASSWORD));
     }
 
+    /**
+     * Handles the result of LoginLoader
+     * @param loader finished loader
+     * @param user user that logged in
+     */
     @Override
     public void onLoadFinished(Loader<User> loader, User user) {
         LoginLoader loginLoader = (LoginLoader) loader;

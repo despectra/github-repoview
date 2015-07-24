@@ -1,6 +1,5 @@
 package com.despectra.githubrepoview.adapters;
 
-import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

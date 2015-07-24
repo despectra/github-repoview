@@ -13,14 +13,17 @@ import java.util.List;
  * Parametrized by list item type D and clickable view holder VH
  */
 public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends RecyclerView.Adapter<VH> {
+
     /**
      * List itself
      */
     private List<D> mObjects;
+
     /**
-     * Only visible items here
+     * Only filtered, visible items here
      */
     private List<D> mFilteredList = new ArrayList<>();
+
     /**
      * Item click listeners
      */
@@ -49,10 +52,18 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
         mAdapterItemClickListener = listener;
     }
 
+    /**
+     * Returns item object by its adapter position
+     * @param position adapter position
+     * @return item object
+     */
     public D getItemAtPosition(int position) {
         return mFilteredList.get(position);
     }
 
+    /**
+     * @return the amount of visible items
+     */
     @Override
     public int getItemCount() {
         if(mFilteredList == null) {
@@ -61,6 +72,10 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
         return mFilteredList.size();
     }
 
+    /**
+     * Updates current filter string
+     * @param filter new filter string
+     */
     public void updateSearchFilter(String filter) {
         mFilter = filter;
         filterItems();

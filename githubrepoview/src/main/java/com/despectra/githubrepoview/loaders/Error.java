@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.net;
+package com.despectra.githubrepoview.loaders;
 
 import android.support.annotation.NonNull;
 

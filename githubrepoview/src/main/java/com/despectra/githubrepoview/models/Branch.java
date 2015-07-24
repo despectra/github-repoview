@@ -47,6 +47,11 @@ public class Branch extends RealmObject {
         this.name = name;
     }
 
+    /**
+     * Creates a new Branch instance with values filled from given branch
+     * @param branch given branch
+     * @return new branch
+     */
     public static Branch copy(Branch branch) {
         Branch copiedBranch = new Branch();
         copiedBranch.setName(branch.getName());

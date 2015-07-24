@@ -1,7 +1,5 @@
 package com.despectra.githubrepoview.activities;
 
-import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.despectra.githubrepoview.App;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.LogoutDialog;
 import com.despectra.githubrepoview.R;
@@ -25,7 +22,6 @@ import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
 
 import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
 
 /**
@@ -56,7 +52,7 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
 
         @Override
         public Loader<List<D>> onCreateLoader(int i, Bundle bundle) {
-            return ItemsListActivity.this.createLocalLoader();
+            return createLocalLoader();
         }
 
         /**
@@ -153,6 +149,9 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
         });
     }
 
+    /**
+     * Shows logout confirmation dialog
+     */
     private void showLogoutDialog() {
         LogoutDialog dialog =  (LogoutDialog) getSupportFragmentManager().findFragmentByTag(LOGOUT_CONFIRM_DIALOG);
         if(dialog == null) {
@@ -164,7 +163,7 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
 
     /**
      * Logout action implementation
-     * Removes all user credentials from shared preferences, clears local cache and switches to LoginActivity
+     * Remove all user credentials from shared preferences, switch to LoginActivity
      */
     private void performLogout() {
         LoginInfo.clearLoggedUser(this);
@@ -212,24 +211,10 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
     }
 
     /**
-     * @return main items adapter
-     */
-    protected ListAdapter getItemsAdapter() {
-        return mItemsAdapter;
-    }
-
-    /**
      * @return main toolbar
      */
     protected Toolbar getToolbar() {
         return mToolbar;
-    }
-
-    /**
-     * @return toolbar search view
-     */
-    protected SearchView getSearchView() {
-        return mSearchView;
     }
 
     /**
@@ -291,12 +276,22 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
         return true;
     }
 
+    /**
+     * handles searchview expanding event
+     * @param menuItem item with search icon
+     * @return true if event is handled by this listener
+     */
     @Override
     public boolean onMenuItemActionExpand(MenuItem menuItem) {
         onSearchViewExpanded();
         return true;
     }
 
+    /**
+     * handles searchview collapsing event
+     * @param menuItem item with search icon
+     * @return true if event is handled by this listener
+     */
     @Override
     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
         onSearchViewCollapsed();

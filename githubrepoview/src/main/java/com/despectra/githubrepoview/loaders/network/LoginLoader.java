@@ -16,15 +16,11 @@ public class LoginLoader extends GitHubApiLoader<User> {
     /**
      * User credentials
      */
-    private String mLogin;
-    private String mPassword;
     private String mAuthorization;
 
     public LoginLoader(Context context, String login, String password) {
         super(context);
-        mLogin = login;
-        mPassword = password;
-        String credentials = mLogin + ":" + mPassword;
+        String credentials = login + ":" + password;
         mAuthorization = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
     }
 
