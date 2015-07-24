@@ -16,11 +16,11 @@ Open app and enter your github login and password
 After that you will see the list of your friends (followers)
 ![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friends_list.png "Friends")
 
-Select any  friend and app will show you his repos
+Select any friend and app will show you his repos
 ![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friend_repos_list.png "Repos")
 ![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/friend_repos_list2.png "Repos2")
 
-Select repository from list ad you will see the list of branches of this repo
+Select repository from list and you will see the list of branches of this repo
 ![alt text](https://github.com/despectra/github-repoview/raw/master/screenshots/repo_branches_list.png "Branches")
 
 You can also filter these lists using search button in appbar
@@ -35,12 +35,12 @@ You can also filter these lists using search button in appbar
 4. When network loader retrieves a list of items it uses CacheSyncManager instance to refresh cache with newly retrieved items
 5. When network loader completes request, it forces local loader to reload data
 6. Both local and network loaders use the same data models classes thanks to the compatibility of Realm and Retrofit
-7. Activities render only local loaders results. It uses RecyclerView and ListAdapter to dislpay items
+7. Activities render only local loaders results. It uses RecyclerView and ListAdapter to display items
 
 ## Dependencies
 This application uses a several external libraries:
 * Retrofit - REST API implementation
-* Realm - local database implementation
+* Realm - local cache
 * Android Support Library - material design widgets, styles
-* Picasso - loading avtars of users
+* Picasso - loading user avatars
 * Materialish-progress - material progress wheel widget
