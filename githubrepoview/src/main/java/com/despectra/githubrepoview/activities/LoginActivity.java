@@ -19,6 +19,7 @@ import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.loaders.network.LoginLoader;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.net.Error;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import io.realm.Realm;
 
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText mLoginEdit;
     private EditText mPasswordEdit;
     private Button mLoginButton;
+    private ProgressWheel mProgressWheel;
 
     /**
      * Field indicating whether Login button was clicked and logging process was started
@@ -75,8 +77,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
         mLoginClicked = savedInstanceState.getBoolean(LOGIN_CLICKED, false);
+        mProgressWheel.setVisibility(mLoginClicked ? View.VISIBLE : View.GONE);
         if(mLoginClicked) {
-            getLoaderManager().initLoader(LOADER_ID, null, this);
+            runLoginLoader();
         }
     }
 
@@ -95,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mPasswordLayout = (TextInputLayout) findViewById(R.id.password_edit_layout);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit);
         mLoginButton = (Button) findViewById(R.id.login_btn);
+        mProgressWheel = (ProgressWheel) findViewById(R.id.progress_wheel);
     }
 
     /**
@@ -106,12 +110,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if( BuildConfig.DEBUG && view.getId() != R.id.login_btn) {
             throw new AssertionError("Only login_btn is allowed to have click listener");
         }
-        if(!validateFields()) {
+        if(mLoginClicked || !validateFields()) {
             return;
         }
+        runLoginLoader();
+        mLoginClicked = true;
+        mProgressWheel.setVisibility(View.VISIBLE);
+    }
+
+    private void runLoginLoader() {
         String login = mLoginEdit.getText().toString();
         String password = mPasswordEdit.getText().toString();
-        mLoginClicked = true;
         Bundle loaderParams = new Bundle();
         loaderParams.putString(LOADER_PARAM_LOGIN, login);
         loaderParams.putString(LOADER_PARAM_PASSWORD, password);
@@ -129,13 +138,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return loginValid && passwordValid;
     }
 
+    private void prepareDatabase() {
+        App app = (App) getApplication();
+        Realm.deleteRealm(app.getDefaultRealmConfiguration());
+    }
+
     /**
      * Launches main activity after successful login
      */
     private void launchFriendsActivity() {
-        App app = (App) getApplication();
-        Realm.deleteRealm(app.getDefaultRealmConfiguration());
-
         Intent intent = new Intent(this, FriendsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -161,10 +172,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onLoadFinished(Loader<User> loader, User user) {
         LoginLoader loginLoader = (LoginLoader) loader;
         if (loginLoader.loadingSucceeded()) {
+            prepareDatabase();
             launchFriendsActivity();
         } else {
             Error error = loginLoader.getError();
             Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+            mLoginClicked = false;
+            mProgressWheel.setVisibility(View.GONE);
         }
         getLoaderManager().destroyLoader(LOADER_ID);
     }

@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.BranchesAdapter;
 import com.despectra.githubrepoview.adapters.ListAdapter;
@@ -68,6 +69,7 @@ public class RepoActivity extends ItemsListActivity<Branch> {
         });
         getToolbar().setTitle(mRepo.getName());
         getToolbar().setSubtitle(getRepoStats());
+        getItemsView().addItemDecoration(new SimpleDividerItemDecoration(this));
     }
 
     /**
@@ -88,8 +90,7 @@ public class RepoActivity extends ItemsListActivity<Branch> {
      * @return String with basic repo stats
      */
     public String getRepoStats() {
-        return String.format("%s start, %s forks",
-                mRepo.getStargazersCount(), mRepo.getForksCount());
+        return getString(R.string.repo_info_template, mRepo.getStargazersCount(), mRepo.getForksCount());
     }
 
 }

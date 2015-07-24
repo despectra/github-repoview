@@ -10,6 +10,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
@@ -84,6 +85,8 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
                 finish();
             }
         });
+
+        getItemsView().addItemDecoration(new SimpleDividerItemDecoration(this));
     }
 
     @Override

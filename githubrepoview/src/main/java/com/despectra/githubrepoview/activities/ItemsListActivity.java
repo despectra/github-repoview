@@ -1,5 +1,7 @@
 package com.despectra.githubrepoview.activities;
 
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.despectra.githubrepoview.App;
 import com.despectra.githubrepoview.LoginInfo;
+import com.despectra.githubrepoview.LogoutDialog;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
@@ -30,11 +33,16 @@ import io.realm.RealmObject;
  * @param <D> item type parameter
  */
 public abstract class ItemsListActivity<D extends RealmObject> extends AppCompatActivity
-        implements ListAdapter.OnAdapterItemClickListener<D>, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+        implements
+        ListAdapter.OnAdapterItemClickListener<D>,
+        SearchView.OnQueryTextListener,
+        MenuItemCompat.OnActionExpandListener {
 
     //loader ids
     public static final int LOCAL_LOADER_ID = 0;
     public static final int NETWORK_LOADER_ID = 1;
+
+    private static final String LOGOUT_CONFIRM_DIALOG = "logoutDialog";
 
     private RecyclerView mItemsView;
     private ListAdapter mItemsAdapter;
@@ -94,6 +102,12 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
         public void onLoaderReset(Loader<List<D>> loader) {
         }
     };
+    private LogoutDialog.Callback mLogoutDialogCallback = new LogoutDialog.Callback() {
+        @Override
+        public void onLogoutConfirmed() {
+            performLogout();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +116,16 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
         setupToolbar();
         setupRecyclerView();
         onContinueOnCreate();
+
         getLoaderManager().restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCllbacks);
         getLoaderManager().initLoader(NETWORK_LOADER_ID, null, mNetworkLoaderCallbacks);
+
+        if(savedInstanceState != null) {
+            LogoutDialog dialog =  (LogoutDialog) getSupportFragmentManager().findFragmentByTag(LOGOUT_CONFIRM_DIALOG);
+            if(dialog != null) {
+                dialog.setCallback(mLogoutDialogCallback);
+            }
+        }
     }
 
     /**
@@ -123,12 +145,21 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.logout:
-                        performLogout();
+                        showLogoutDialog();
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    private void showLogoutDialog() {
+        LogoutDialog dialog =  (LogoutDialog) getSupportFragmentManager().findFragmentByTag(LOGOUT_CONFIRM_DIALOG);
+        if(dialog == null) {
+            dialog = new LogoutDialog();
+        }
+        dialog.setCallback(mLogoutDialogCallback);
+        dialog.show(getSupportFragmentManager(), LOGOUT_CONFIRM_DIALOG);
     }
 
     /**
