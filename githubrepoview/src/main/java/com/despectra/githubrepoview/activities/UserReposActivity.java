@@ -15,8 +15,8 @@ import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.adapters.ReposAdapter;
 import com.despectra.githubrepoview.loaders.local.ReposLocalLoader;
 import com.despectra.githubrepoview.loaders.network.ReposLoader;
-import com.despectra.githubrepoview.models.Repo;
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.Repo;
+import com.despectra.githubrepoview.models.realm.User;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 

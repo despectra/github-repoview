@@ -3,7 +3,7 @@ package com.despectra.githubrepoview.loaders.network;
 import android.content.Context;
 
 import com.despectra.githubrepoview.cache.FriendsSyncManager;
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
 import java.util.List;

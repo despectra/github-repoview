@@ -1,8 +1,8 @@
 package com.despectra.githubrepoview;
 
-import com.despectra.githubrepoview.models.Branch;
-import com.despectra.githubrepoview.models.Repo;
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.Branch;
+import com.despectra.githubrepoview.models.realm.Repo;
+import com.despectra.githubrepoview.models.realm.User;
 
 import io.realm.annotations.RealmModule;
 

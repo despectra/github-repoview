@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.RoundedTransformation;
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.User;
 import com.squareup.picasso.Picasso;
 
 /**

@@ -1,6 +1,6 @@
 package com.despectra.githubrepoview.cache;
 
-import com.despectra.githubrepoview.models.Branch;
+import com.despectra.githubrepoview.models.realm.Branch;
 
 import io.realm.Realm;
 

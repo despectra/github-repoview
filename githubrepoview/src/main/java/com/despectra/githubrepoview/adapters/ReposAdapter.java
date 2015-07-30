@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
-import com.despectra.githubrepoview.models.Repo;
+import com.despectra.githubrepoview.models.realm.Repo;
 
 /**
  * Adapter for rendering list of user repos

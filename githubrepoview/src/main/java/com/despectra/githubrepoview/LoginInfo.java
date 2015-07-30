@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.User;
 import com.google.gson.Gson;
 
 /**

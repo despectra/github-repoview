@@ -3,8 +3,8 @@ package com.despectra.githubrepoview.loaders.network;
 import android.content.Context;
 
 import com.despectra.githubrepoview.cache.ReposSyncManager;
-import com.despectra.githubrepoview.models.Repo;
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.Repo;
+import com.despectra.githubrepoview.models.realm.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
 import java.util.List;

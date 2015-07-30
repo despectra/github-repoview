@@ -2,7 +2,7 @@ package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.models.realm.User;
 
 import java.util.List;
 

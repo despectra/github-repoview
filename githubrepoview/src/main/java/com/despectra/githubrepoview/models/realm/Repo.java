@@ -1,6 +1,5 @@
-package com.despectra.githubrepoview.models;
+package com.despectra.githubrepoview.models.realm;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmList;
