@@ -15,6 +15,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initRealm();
+    }
+
+    private void initRealm() {
         mRealmConfig = new RealmConfiguration.Builder(this)
                 .name("repoview.realm")
                 .setModules(new RealmSchema())

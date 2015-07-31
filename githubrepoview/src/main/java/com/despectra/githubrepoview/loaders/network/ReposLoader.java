@@ -19,11 +19,11 @@ public class ReposLoader extends GitHubApiLoader<List<Repo>> {
 
     public static final String SORT_ORDER = "pushed";
     
-    private String mUserName;
+    private User mUser;
 
-    public ReposLoader(Context context, String userName) {
+    public ReposLoader(Context context, User user) {
         super(context);
-        mUserName = userName;
+        mUser = user;
     }
 
     /**
@@ -36,11 +36,11 @@ public class ReposLoader extends GitHubApiLoader<List<Repo>> {
 
     @Override
     protected List<Repo> tryLoadData(GitHubService restService) {
-        List<Repo> repos = restService.getUserRepos(mUserName, SORT_ORDER);
+        List<Repo> repos = restService.getUserRepos(mUser.getLogin(), SORT_ORDER);
 
         Realm realm = Realm.getDefaultInstance();
-        RealmList<Repo> localRepos = realm.where(User.class).equalTo("login", mUserName).findFirst().getRepos();
-        ReposSyncManager syncManager = new ReposSyncManager(Repo.class, realm);
+        RealmList<Repo> localRepos = realm.where(User.class).equalTo("login", mUser.getLogin()).findFirst().getRepos();
+        ReposSyncManager syncManager = new ReposSyncManager(getContext(), mUser);
         try {
             syncManager.sync(repos, localRepos);
         } finally {

@@ -1,6 +1,9 @@
 package com.despectra.githubrepoview.cache;
 
+import android.content.Context;
+
 import com.despectra.githubrepoview.models.realm.Branch;
+import com.despectra.githubrepoview.models.realm.Repo;
 
 import io.realm.Realm;
 
@@ -9,12 +12,15 @@ import io.realm.Realm;
  */
 public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
-    public BranchesSyncManager(Class<Branch> itemClass, Realm realm) {
-        super(itemClass, realm);
+    private final Repo mParentRepo;
+
+    public BranchesSyncManager(Context context, Repo parentRepo) {
+        super(context);
+        mParentRepo = parentRepo;
     }
 
     @Override
-    protected String getItemPrimaryKey(Branch item) {
+    protected String getItemUniqueKey(Branch item) {
         return item.getName();
     }
 
@@ -25,8 +31,13 @@ public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
     @Override
     protected void onCreateLocalItem(Branch localItem, Branch networkItem) {
-        //generate id manually because GitHub API doesn't provide id for branch
-        localItem.setId(getRealm().where(Branch.class).maximumInt("id") + 1);
+        localItem.setId(getDbWriteStrategy().getNextItemId(Branch.class));
+        localItem.setRepoId(mParentRepo.getId());
         localItem.setName(networkItem.getName());
+    }
+
+    @Override
+    protected Branch createNewItemModel() {
+        return new Branch();
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 public class FriendsSource {
 
     private SQLiteDatabase mDatabase;
-    private CacheHelper mCacheHelper;
+    private DatabaseHelper mDatabaseHelper;
 
     public static final String[] ALL_COLUMNS = {
             FriendsTable.COLUMN_ID,
@@ -31,7 +31,7 @@ public class FriendsSource {
     public static final String WHERE_ID_EQUALS = FriendsTable.COLUMN_ID + " = ?";
 
     public FriendsSource(Context context) {
-        mCacheHelper = new CacheHelper(context);
+        mDatabaseHelper = new DatabaseHelper(context);
     }
 
     public List<User> getAllFriends() {
@@ -62,7 +62,7 @@ public class FriendsSource {
     }
 
     public void open() {
-        mDatabase = mCacheHelper.getWritableDatabase();
+        mDatabase = mDatabaseHelper.getWritableDatabase();
     }
 
     public void close() {

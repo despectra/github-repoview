@@ -1,40 +1,38 @@
 package com.despectra.githubrepoview.cache;
 
+import android.content.Context;
+
 import com.despectra.githubrepoview.SetOperations;
+import com.despectra.githubrepoview.cache.db.DbObjectsFactory;
+import com.despectra.githubrepoview.cache.db.DbWriteStrategy;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmObject;
 
 /**
  * Class for refreshing local cache (realm database)
  * @param <D> type of item
- * @param <K> type of key field
+ * @param <K> type of unique key field
  */
-public abstract class CacheSyncManager<D extends RealmObject, K> {
+public abstract class CacheSyncManager<D, K> {
 
     /**
-     * Realm instance to perform write operations
+     * Database write strategy implementation to perform write operations
      */
-    private Realm mRealm;
+    private DbWriteStrategy mDbStrategy;
+    private Context mContext;
 
-    /**
-     * Item class to instantiate items instances
-     */
-    private Class<D> mItemClassParameter;
-
-    public CacheSyncManager(Class<D> itemClass, Realm realm) {
-        mRealm = realm;
-        mItemClassParameter = itemClass;
+    public CacheSyncManager(Context context) {
+        mDbStrategy = DbObjectsFactory.getDefaultWriteStrategy();
+        mContext = context;
     }
 
-    public Realm getRealm() {
-        return mRealm;
+    public DbWriteStrategy getDbWriteStrategy() {
+        return mDbStrategy;
     }
 
     /**
@@ -53,39 +51,41 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
         Set<K> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
         Set<K> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
 
-        mRealm.beginTransaction();
+        mDbStrategy.beginTransaction(mContext);
         //create new
         for(K id : toCreate) {
-            D newItem = mRealm.createObject(mItemClassParameter);
+            D newItem = createNewItemModel();
             onCreateLocalItem(newItem, networkItemsMap.get(id));
+            mDbStrategy.create(newItem);
+            //VERY special case
             if(localItems instanceof RealmList) {
                 localItems.add(newItem);
             }
         }
         //update existing
         for(K id : toUpdate) {
-            D existingFriend = localItemsMap.get(id);
-            onUpdateLocalItem(existingFriend, networkItemsMap.get(id));
+            D existingItem = localItemsMap.get(id);
+            onUpdateLocalItem(existingItem, networkItemsMap.get(id));
+            mDbStrategy.update(existingItem, networkItemsMap.get(id));
         }
         //delete non-existing
         for(K id : toDelete) {
-            D deletedUser = localItemsMap.get(id);
-            deletedUser.removeFromRealm();
+            D deletedItem = localItemsMap.get(id);
+            mDbStrategy.delete(deletedItem);
         }
 
-        mRealm.commitTransaction();
-        mRealm.close();
+        mDbStrategy.commitTransaction();
     }
 
     /**
-     * Creates a mapping KeyFieldValue -> Item from a list of items
+     * Creates a mapping UniqueKeyFieldValue -> Item from a list of items
      * @param items list of items
      * @return mapping
      */
     private Map<K, D> getMapFromItemsList(List<D> items) {
         Map<K, D> idsMap = new HashMap<>();
         for(D item : items) {
-            idsMap.put(getItemPrimaryKey(item), item);
+            idsMap.put(getItemUniqueKey(item), item);
         }
         return idsMap;
     }
@@ -95,7 +95,7 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
      * @param item given item
      * @return value of primary key
      */
-    protected abstract K getItemPrimaryKey(D item);
+    protected abstract K getItemUniqueKey(D item);
 
     /**
      * Performs all specific updating operations - assigning fields, calling setters etc.
@@ -110,4 +110,6 @@ public abstract class CacheSyncManager<D extends RealmObject, K> {
      * @param networkItem item with data to load into localItem
      */
     protected abstract void onCreateLocalItem(D localItem, D networkItem);
+
+    protected abstract D createNewItemModel();
 }

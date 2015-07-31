@@ -140,6 +140,6 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
 
     @Override
     protected Loader<List<Repo>> createNetworkLoader() {
-        return new ReposLoader(this, mUser.getLogin());
+        return new ReposLoader(this, mUser);
     }
 }

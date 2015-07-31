@@ -1,5 +1,7 @@
 package com.despectra.githubrepoview.models.realm;
 
+import com.google.gson.annotations.Expose;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -7,8 +9,10 @@ public class Branch extends RealmObject {
 
     @PrimaryKey
     private long id;
+    @Expose
     private String name;
-
+    @Expose
+    private long repoId;
     /**
      *
      * @return
@@ -45,6 +49,15 @@ public class Branch extends RealmObject {
         this.name = name;
     }
 
+    public long getRepoId() {
+        return repoId;
+    }
+
+
+    public void setRepoId(long id) {
+        repoId = id;
+    }
+
     /**
      * Creates a new Branch instance with values filled from given branch
      * @param branch given branch
@@ -55,4 +68,5 @@ public class Branch extends RealmObject {
         copiedBranch.setName(branch.getName());
         return copiedBranch;
     }
+
 }

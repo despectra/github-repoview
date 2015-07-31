@@ -1,5 +1,7 @@
 package com.despectra.githubrepoview.cache;
 
+import android.content.Context;
+
 import com.despectra.githubrepoview.models.realm.User;
 
 import io.realm.Realm;
@@ -9,12 +11,12 @@ import io.realm.Realm;
  */
 public class FriendsSyncManager extends CacheSyncManager<User, Long> {
 
-    public FriendsSyncManager(Class<User> itemClass, Realm realm) {
-        super(itemClass, realm);
+    public FriendsSyncManager(Context context) {
+        super(context);
     }
 
     @Override
-    protected Long getItemPrimaryKey(User item) {
+    protected Long getItemUniqueKey(User item) {
         return item.getId();
     }
 
@@ -26,5 +28,10 @@ public class FriendsSyncManager extends CacheSyncManager<User, Long> {
     @Override
     protected void onCreateLocalItem(User localItem, User networkItem) {
         User.fillUserPrimitives(localItem, networkItem);
+    }
+
+    @Override
+    protected User createNewItemModel() {
+        return new User();
     }
 }

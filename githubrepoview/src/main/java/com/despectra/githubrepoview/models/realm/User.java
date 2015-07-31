@@ -1,5 +1,6 @@
 package com.despectra.githubrepoview.models.realm;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmList;
@@ -12,13 +13,20 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject {
 
     @PrimaryKey
+    @Expose
     private long id;
+    @Expose
     private String login;
     @SerializedName("avatar_url")
+    @Expose
     private String avatarUrl;
+    @Expose
     private String name;
+    @Expose
     private String company;
+    @Expose
     private String location;
+    @Expose
     private String email;
 
 

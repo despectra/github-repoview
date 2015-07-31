@@ -55,7 +55,7 @@ public class RepoActivity extends ItemsListActivity<Branch> {
 
     @Override
     protected Loader<List<Branch>> createNetworkLoader() {
-        return new BranchesLoader(this, mUser.getLogin(), mRepo.getName());
+        return new BranchesLoader(this, mUser, mRepo);
     }
 
     private void setupViews() {

@@ -41,7 +41,7 @@ public class FriendsLoader extends GitHubApiLoader<List<User> > {
         Realm realm = Realm.getDefaultInstance();
         RealmResults<User> localFriends = realm.where(User.class).findAll();
 
-        FriendsSyncManager syncManager = new FriendsSyncManager(User.class, realm);
+        FriendsSyncManager syncManager = new FriendsSyncManager(getContext());
         try {
             syncManager.sync(friends, localFriends);
         } finally {

@@ -1,5 +1,6 @@
 package com.despectra.githubrepoview.models.realm;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmList;
@@ -9,16 +10,25 @@ import io.realm.annotations.PrimaryKey;
 public class Repo extends RealmObject {
 
     @PrimaryKey
+    @Expose
     private long id;
+    @Expose
     private String name;
+    @Expose
     private String description;
+    @Expose
     @SerializedName("forks_count")
     private int forksCount;
+    @Expose
     @SerializedName("stargazers_count")
     private int stargazersCount;
+    @Expose
     @SerializedName("watchers_count")
     private int watchersCount;
+
     private RealmList<Branch> branches;
+
+    private long ownerId;
 
     /**
      *
@@ -137,6 +147,14 @@ public class Repo extends RealmObject {
         this.branches = branches;
     }
 
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
     /**
      * Creates a new Repo instance with values filled from given repo
      * @param repo given repo
@@ -161,4 +179,5 @@ public class Repo extends RealmObject {
         targetRepo.setStargazersCount(from.getStargazersCount());
         targetRepo.setWatchersCount(from.getWatchersCount());
     }
+
 }

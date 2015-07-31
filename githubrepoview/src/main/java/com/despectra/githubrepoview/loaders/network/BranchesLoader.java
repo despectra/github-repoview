@@ -21,13 +21,13 @@ public class BranchesLoader extends GitHubApiLoader<List<Branch>> {
     /**
      * Data needed to load list of branches
      */
-    private String mUserName;
-    private String mRepoName;
+    private User mOwner;
+    private Repo mRepo;
 
-    public BranchesLoader(Context context, String userName, String repoName) {
+    public BranchesLoader(Context context, User owner, Repo repo) {
         super(context);
-        mUserName = userName;
-        mRepoName = repoName;
+        mOwner = owner;
+        mRepo = repo;
     }
 
     /**
@@ -45,12 +45,13 @@ public class BranchesLoader extends GitHubApiLoader<List<Branch>> {
      */
     @Override
     protected List<Branch> tryLoadData(GitHubService restService) {
-        List<Branch> branches = restService.getRepoBranches(mUserName, mRepoName);
+        List<Branch> branches = restService.getRepoBranches(mOwner.getLogin(), mRepo.getName());
+
         Realm realm = Realm.getDefaultInstance();
-        User user = realm.where(User.class).equalTo("login", mUserName).findFirst();
-        Repo repo = user.getRepos().where().equalTo("name", mRepoName).findFirst();
+        User user = realm.where(User.class).equalTo("login", mOwner.getLogin()).findFirst();
+        Repo repo = user.getRepos().where().equalTo("name", mRepo.getName()).findFirst();
         RealmList<Branch> localBranches = repo.getBranches();
-        BranchesSyncManager syncManager = new BranchesSyncManager(Branch.class, realm);
+        BranchesSyncManager syncManager = new BranchesSyncManager(getContext(), repo);
         try {
             syncManager.sync(branches, localBranches);
         } finally {
