@@ -135,7 +135,7 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
 
     @Override
     protected Loader<List<Repo>> createLocalLoader() {
-        return new ReposLocalLoader(this, mUser.getLogin());
+        return new ReposLocalLoader(this, mUser);
     }
 
     @Override

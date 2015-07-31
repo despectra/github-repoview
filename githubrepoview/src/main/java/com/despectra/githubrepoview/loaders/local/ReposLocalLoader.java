@@ -2,6 +2,7 @@ package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.Cache;
 import com.despectra.githubrepoview.models.realm.Repo;
 import com.despectra.githubrepoview.models.realm.User;
 
@@ -17,20 +18,16 @@ public class ReposLocalLoader extends LocalLoader<Repo> {
     /**
      * Who's repos should we load?
      */
-    private String mLogin;
+    private User mOwner;
 
-    public ReposLocalLoader(Context context, String login) {
+    public ReposLocalLoader(Context context, User owner) {
         super(context);
-        mLogin = login;
+        mOwner = owner;
     }
 
     @Override
-    protected List<Repo> tryLoadData(Realm realm) {
-        return realm.where(User.class).equalTo("login", mLogin).findFirst().getRepos();
+    protected List<Repo> tryLoadData(Cache cache) {
+        return cache.getReposByOwnerId(mOwner.getId());
     }
 
-    @Override
-    protected Repo copyRealmItem(Repo item) {
-        return Repo.copy(item);
-    }
 }

@@ -173,6 +173,7 @@ public class Repo extends RealmObject {
      */
     public static void fillRepoPrimitives(Repo targetRepo, Repo from) {
         targetRepo.setId(from.getId());
+        targetRepo.setOwnerId(from.getOwnerId());
         targetRepo.setName(from.getName());
         targetRepo.setDescription(from.getDescription() != null ? from.getDescription() : "");
         targetRepo.setForksCount(from.getForksCount());

@@ -50,7 +50,7 @@ public class RepoActivity extends ItemsListActivity<Branch> {
 
     @Override
     protected Loader<List<Branch>> createLocalLoader() {
-        return new BranchesLocalLoader(this, mUser.getLogin(), mRepo.getName());
+        return new BranchesLocalLoader(this, mRepo);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.Cache;
 import com.despectra.githubrepoview.models.realm.User;
 
 import java.util.List;
@@ -18,12 +19,8 @@ public class FriendsLocalLoader extends LocalLoader<User> {
     }
 
     @Override
-    protected List<User> tryLoadData(Realm realm) {
-        return realm.where(User.class).findAll();
+    protected List<User> tryLoadData(Cache cache) {
+        return cache.getAllFriends();
     }
 
-    @Override
-    protected User copyRealmItem(User item) {
-        return User.copy(item);
-    }
 }

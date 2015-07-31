@@ -2,6 +2,7 @@ package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.Cache;
 import com.despectra.githubrepoview.models.realm.Branch;
 import com.despectra.githubrepoview.models.realm.Repo;
 import com.despectra.githubrepoview.models.realm.User;
@@ -16,26 +17,18 @@ import io.realm.Realm;
 public class BranchesLocalLoader extends LocalLoader<Branch> {
 
     /**
-     * Fields to identify exact repo
+     * Load branches of this repo
      */
-    private String mLogin;
-    private String mRepoName;
+    private Repo mRepo;
 
-    public BranchesLocalLoader(Context context, String login, String repoName) {
+    public BranchesLocalLoader(Context context, Repo repo) {
         super(context);
-        mLogin = login;
-        mRepoName = repoName;
+        mRepo = repo;
     }
 
     @Override
-    protected List<Branch> tryLoadData(Realm realm) {
-        User user = realm.where(User.class).equalTo("login", mLogin).findFirst();
-        Repo repo = user.getRepos().where().equalTo("name", mRepoName).findFirst();
-        return repo.getBranches();
+    protected List<Branch> tryLoadData(Cache cache) {
+        return cache.getBranchesByRepoId(mRepo.getId());
     }
 
-    @Override
-    protected Branch copyRealmItem(Branch item) {
-        return Branch.copy(item);
-    }
 }

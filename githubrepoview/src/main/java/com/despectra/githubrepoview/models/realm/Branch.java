@@ -66,6 +66,7 @@ public class Branch extends RealmObject {
     public static Branch copy(Branch branch) {
         Branch copiedBranch = new Branch();
         copiedBranch.setName(branch.getName());
+        copiedBranch.setRepoId(branch.getRepoId());
         return copiedBranch;
     }
 

@@ -3,8 +3,8 @@ package com.despectra.githubrepoview.cache;
 import android.content.Context;
 
 import com.despectra.githubrepoview.SetOperations;
-import com.despectra.githubrepoview.cache.db.DbObjectsFactory;
-import com.despectra.githubrepoview.cache.db.DbWriteStrategy;
+import com.despectra.githubrepoview.cache.db.DbUtils;
+import com.despectra.githubrepoview.cache.db.DbStrategy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,15 +23,15 @@ public abstract class CacheSyncManager<D, K> {
     /**
      * Database write strategy implementation to perform write operations
      */
-    private DbWriteStrategy mDbStrategy;
+    private DbStrategy mDbStrategy;
     private Context mContext;
 
     public CacheSyncManager(Context context) {
-        mDbStrategy = DbObjectsFactory.getDefaultWriteStrategy();
+        mDbStrategy = DbUtils.getDefaultStrategy();
         mContext = context;
     }
 
-    public DbWriteStrategy getDbWriteStrategy() {
+    public DbStrategy getDbWriteStrategy() {
         return mDbStrategy;
     }
 
@@ -51,30 +51,37 @@ public abstract class CacheSyncManager<D, K> {
         Set<K> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
         Set<K> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
 
-        mDbStrategy.beginTransaction(mContext);
-        //create new
-        for(K id : toCreate) {
-            D newItem = createNewItemModel();
-            onCreateLocalItem(newItem, networkItemsMap.get(id));
-            mDbStrategy.create(newItem);
-            //VERY special case
-            if(localItems instanceof RealmList) {
-                localItems.add(newItem);
+        mDbStrategy.open(mContext);
+        mDbStrategy.beginTransaction();
+
+        try {
+            //create new
+            for (K id : toCreate) {
+                D newItem = createNewItemModel();
+                onCreateLocalItem(newItem, networkItemsMap.get(id));
+                mDbStrategy.create(newItem);
+                //VERY special case
+                if (localItems instanceof RealmList) {
+                    localItems.add(newItem);
+                }
             }
-        }
-        //update existing
-        for(K id : toUpdate) {
-            D existingItem = localItemsMap.get(id);
-            onUpdateLocalItem(existingItem, networkItemsMap.get(id));
-            mDbStrategy.update(existingItem, networkItemsMap.get(id));
-        }
-        //delete non-existing
-        for(K id : toDelete) {
-            D deletedItem = localItemsMap.get(id);
-            mDbStrategy.delete(deletedItem);
+            //update existing
+            for (K id : toUpdate) {
+                D existingItem = localItemsMap.get(id);
+                onUpdateLocalItem(existingItem, networkItemsMap.get(id));
+                mDbStrategy.update(existingItem, networkItemsMap.get(id));
+            }
+            //delete non-existing
+            for (K id : toDelete) {
+                D deletedItem = localItemsMap.get(id);
+                mDbStrategy.delete(deletedItem);
+            }
+            mDbStrategy.commitTransaction();
+        } catch(Exception e) {
+            mDbStrategy.rollbackTransaction();
         }
 
-        mDbStrategy.commitTransaction();
+        mDbStrategy.close();
     }
 
     /**

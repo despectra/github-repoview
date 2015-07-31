@@ -9,7 +9,7 @@ public class ReposTable {
     public static final String NAME = "repos";
 
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_OWNER_ID = "owner_id";
+    public static final String COLUMN_OWNER_ID = "ownerId";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_FORKS_COUNT = "forks_count";

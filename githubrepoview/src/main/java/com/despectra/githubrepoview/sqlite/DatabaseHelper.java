@@ -3,6 +3,7 @@ package com.despectra.githubrepoview.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  *
@@ -21,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         FriendsTable.onCreate(db);
         ReposTable.onCreate(db);
         BranchesTable.onCreate(db);
+        Log.d("app", "Database cache.db created");
     }
 
     @Override

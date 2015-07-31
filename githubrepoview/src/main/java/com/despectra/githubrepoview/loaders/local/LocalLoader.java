@@ -3,6 +3,8 @@ package com.despectra.githubrepoview.loaders.local;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.Cache;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,11 @@ import io.realm.Realm;
  */
 public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
 
+    private Cache mCache;
+
     public LocalLoader(Context context) {
         super(context);
+        mCache = new Cache(context);
     }
 
     /**
@@ -24,19 +29,15 @@ public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
      */
     @Override
     public List<D> loadInBackground() {
-        Realm realm = Realm.getDefaultInstance();
-        ArrayList<D> copiedItems = new ArrayList<>();
+        mCache.openCache();
+        List<D> cacheItems = new ArrayList<>();
         try {
-            List<D> realmItems = tryLoadData(realm);
-            for (D item : realmItems) {
-                D copiedItem = copyRealmItem(item);
-                copiedItems.add(copiedItem);
-            }
+            cacheItems.addAll(tryLoadData(mCache));
         } finally {
-            realm.close();
+            mCache.closeCache();
         }
 
-        return copiedItems;
+        return cacheItems;
     }
 
     @Override
@@ -46,16 +47,9 @@ public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
     }
 
     /**
-     * Performs a query to realm database
-     * @param realm instance of realm
+     * Performs a query to local database
+     * @param cache data cache object
      * @return loaded list
      */
-    protected abstract List<D> tryLoadData(Realm realm);
-
-    /**
-     * Copies realm result item into new item of the same type
-     * @param item realm result item
-     * @return new item
-     */
-    protected abstract D copyRealmItem(D item);
+    protected abstract List<D> tryLoadData(Cache cache);
 }

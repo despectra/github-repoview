@@ -14,4 +14,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="repo_info_template">%1$s stars, %2$s forks</string>
+
+    <string name="default_login"></string>
+    <string name="default_password"></string>
+
 </resources>

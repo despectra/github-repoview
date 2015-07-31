@@ -2,18 +2,29 @@ package com.despectra.githubrepoview.cache.db;
 
 import android.content.Context;
 
+import java.util.List;
+import java.util.Map;
+
 import io.realm.RealmObject;
 
 /**
  * Interface for performing write operations on generic database
  * Implement it for custom database driver (sqlite, realm etc.)
  */
-public interface DbWriteStrategy {
+public interface DbStrategy {
+
+    List getByColumnsValues(Class<?> modelClass, String[] columns, Object[] values);
+
     /**
-     * Begins database transaction
+     * Opens database connection
      * @param context for database-specific operations
      */
-    void beginTransaction(Context context);
+    void open(Context context);
+
+    /**
+     * Begins database transaction
+     */
+    void beginTransaction();
 
     /**
      * creates new record in database with data from given object
@@ -43,4 +54,11 @@ public interface DbWriteStrategy {
     void delete(Object item);
 
     void commitTransaction();
+
+    void rollbackTransaction();
+
+    /**
+     * closes database connection
+     */
+    void close();
 }

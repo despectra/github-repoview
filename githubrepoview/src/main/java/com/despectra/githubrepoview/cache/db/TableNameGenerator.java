@@ -12,14 +12,14 @@ import com.despectra.githubrepoview.sqlite.ReposTable;
  */
 public class TableNameGenerator {
 
-    public static String generate(Object item) {
-        if(item instanceof User) {
+    public static String generate(Class type) {
+        if(type == User.class) {
             return FriendsTable.NAME;
         }
-        if(item instanceof Repo) {
+        if(type == Repo.class) {
             return ReposTable.NAME;
         }
-        if(item instanceof Branch) {
+        if(type == Branch.class) {
             return BranchesTable.NAME;
         }
         throw new ClassCastException("Only model classes are allowed here");

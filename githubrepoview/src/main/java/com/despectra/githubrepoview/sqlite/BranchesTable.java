@@ -10,7 +10,7 @@ public class BranchesTable {
     public static final String NAME = "branches";
 
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_REPO_ID = "repo_id";
+    public static final String COLUMN_REPO_ID = "repoId";
     public static final String COLUMN_NAME = "name";
 
     public static final String SQL_CREATE = "create table " + NAME + "("

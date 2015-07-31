@@ -25,7 +25,7 @@ public class RestServiceGenerator {
                 .setEndpoint(baseUrl)
                 .setClient(new OkClient(new OkHttpClient()))
                 .setConverter(new GsonConverter(Utils.getDefaultGsonInstance()))
-                .setLogLevel(RestAdapter.LogLevel.FULL);
+                .setLogLevel(RestAdapter.LogLevel.BASIC);
         if(basicAuthorization != null) {
             restBuilder.setRequestInterceptor(new RequestInterceptor() {
                 @Override

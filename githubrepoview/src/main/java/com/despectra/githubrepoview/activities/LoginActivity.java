@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void prepareDatabase() {
         App app = (App) getApplication();
-        Realm.deleteRealm(app.getDefaultRealmConfiguration());
+        app.dropDatabase();
     }
 
     /**
