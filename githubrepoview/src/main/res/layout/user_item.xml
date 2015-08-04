@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="72dp"
-    android:background="@drawable/list_item_selector">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="user" type="com.despectra.githubrepoview.models.User" />
+    </data>
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="@dimen/item_icon_width"
-        android:layout_height="@dimen/item_icon_width"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:layout_toRightOf="@id/icon"
-        android:layout_centerVertical="true"
-        android:layout_alignWithParentIfMissing="true">
+        android:minHeight="72dp"
+        android:background="@drawable/list_item_selector">
 
-        <TextView
-            android:id="@+id/line1"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/item_icon_width"
+            android:layout_height="@dimen/item_icon_width"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:text="\@felixge"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_toRightOf="@id/icon"
+            android:layout_centerVertical="true"
+            android:layout_alignWithParentIfMissing="true">
 
-        <TextView
-            android:id="@+id/line2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="Felix Geisendorfer"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/line1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:text="@{user.login}"/>
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="@{user.name}"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

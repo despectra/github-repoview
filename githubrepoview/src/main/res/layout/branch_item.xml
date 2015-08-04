@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    android:id="@+id/text1"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="48dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:gravity="center_vertical"
-    android:text="master">
 
-</TextView>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="branch" type="com.despectra.githubrepoview.models.Branch" />
+    </data>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:gravity="center_vertical"
+        android:textColor='@{branch.name.equalsTo("master") ? @android:color/green : @android:color/black}'
+        android:text="@{branch.name}">
+
+    </TextView>
+</layout>

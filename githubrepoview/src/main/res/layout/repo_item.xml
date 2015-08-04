@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="72dp"
-    android:background="@drawable/list_item_selector">
-
-    <LinearLayout
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="repo" type="com.despectra.githubrepoview.models.Repo" />
+    </data>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp" >
+        android:minHeight="72dp"
+        android:background="@drawable/list_item_selector">
 
-        <TextView
-            android:id="@+id/line1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:text="express.js"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" >
 
-        <TextView
-            android:id="@+id/lines23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/md_grey_700"
-            android:lines="2"
-            android:ellipsize="end"
-            android:text="Fast, unopinionated, minimalist web framework for node. Fast, unopinionated, minimalist web framework for node. Fast, unopinionated, minimalist web framework for node."/>
+            <TextView
+                android:id="@+id/line1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:text="@{repo.name}"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/lines23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/md_grey_700"
+                android:lines="2"
+                android:ellipsize="end"
+                android:text="@{repo.description}"/>
 
-</FrameLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>
