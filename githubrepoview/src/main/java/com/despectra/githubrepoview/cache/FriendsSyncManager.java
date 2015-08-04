@@ -2,6 +2,8 @@ package com.despectra.githubrepoview.cache;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
+import com.despectra.githubrepoview.cache.db.FriendsDao;
 import com.despectra.githubrepoview.models.realm.User;
 
 import io.realm.Realm;
@@ -11,8 +13,8 @@ import io.realm.Realm;
  */
 public class FriendsSyncManager extends CacheSyncManager<User, Long> {
 
-    public FriendsSyncManager(Context context) {
-        super(context);
+    public FriendsSyncManager(FriendsDao dao) {
+        super(dao);
     }
 
     @Override

@@ -3,15 +3,12 @@ package com.despectra.githubrepoview.cache;
 import android.content.Context;
 
 import com.despectra.githubrepoview.SetOperations;
-import com.despectra.githubrepoview.cache.db.DbUtils;
-import com.despectra.githubrepoview.cache.db.DbStrategy;
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import io.realm.RealmList;
 
 /**
  * Class for refreshing local cache (realm database)
@@ -23,16 +20,10 @@ public abstract class CacheSyncManager<D, K> {
     /**
      * Database write strategy implementation to perform write operations
      */
-    private DbStrategy mDbStrategy;
-    private Context mContext;
+    private DatabaseDao<D> mDao;
 
-    public CacheSyncManager(Context context) {
-        mDbStrategy = DbUtils.getDefaultStrategy();
-        mContext = context;
-    }
-
-    public DbStrategy getDbWriteStrategy() {
-        return mDbStrategy;
+    public CacheSyncManager(DatabaseDao<D> dao) {
+        mDao = dao;
     }
 
     /**
@@ -51,37 +42,33 @@ public abstract class CacheSyncManager<D, K> {
         Set<K> toCreate = SetOperations.difference(networkItemsMap.keySet(), localItemsMap.keySet());
         Set<K> toDelete = SetOperations.difference(localItemsMap.keySet(), networkItemsMap.keySet());
 
-        mDbStrategy.open(mContext);
-        mDbStrategy.beginTransaction();
+        mDao.open();
+        mDao.beginTransaction();
 
         try {
             //create new
             for (K id : toCreate) {
                 D newItem = createNewItemModel();
                 onCreateLocalItem(newItem, networkItemsMap.get(id));
-                mDbStrategy.create(newItem);
-                //VERY special case
-                if (localItems instanceof RealmList) {
-                    localItems.add(newItem);
-                }
+                mDao.create(newItem);
             }
             //update existing
             for (K id : toUpdate) {
                 D existingItem = localItemsMap.get(id);
                 onUpdateLocalItem(existingItem, networkItemsMap.get(id));
-                mDbStrategy.update(existingItem, networkItemsMap.get(id));
+                mDao.update(existingItem, networkItemsMap.get(id));
             }
             //delete non-existing
             for (K id : toDelete) {
                 D deletedItem = localItemsMap.get(id);
-                mDbStrategy.delete(deletedItem);
+                mDao.delete(deletedItem);
             }
-            mDbStrategy.commitTransaction();
+            mDao.commitTransaction();
         } catch(Exception e) {
-            mDbStrategy.rollbackTransaction();
+            mDao.rollbackTransaction();
         }
 
-        mDbStrategy.close();
+        mDao.close();
     }
 
     /**
@@ -118,5 +105,8 @@ public abstract class CacheSyncManager<D, K> {
      */
     protected abstract void onCreateLocalItem(D localItem, D networkItem);
 
+    /**
+     * @return new item object
+     */
     protected abstract D createNewItemModel();
 }

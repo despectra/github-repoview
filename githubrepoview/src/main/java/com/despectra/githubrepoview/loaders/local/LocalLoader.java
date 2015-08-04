@@ -3,23 +3,21 @@ package com.despectra.githubrepoview.loaders.local;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.despectra.githubrepoview.cache.db.Cache;
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-
 /**
- * Loader for loading items from local cache (realm database)
+ * Loader for loading items from local database
  */
 public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
 
-    private Cache mCache;
+    private DatabaseDao<D> mDao;
 
     public LocalLoader(Context context) {
         super(context);
-        mCache = new Cache(context);
+        mDao = getDatabaseDao();
     }
 
     /**
@@ -29,15 +27,16 @@ public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
      */
     @Override
     public List<D> loadInBackground() {
-        mCache.openCache();
-        List<D> cacheItems = new ArrayList<>();
+        mDao.open();
+        List<D> localItems = null;
+
         try {
-            cacheItems.addAll(tryLoadData(mCache));
+            localItems = mDao.getItems(getSelectionColumns(), getSelectionColumnsValues());
         } finally {
-            mCache.closeCache();
+            mDao.close();
         }
 
-        return cacheItems;
+        return localItems;
     }
 
     @Override
@@ -47,9 +46,17 @@ public abstract class LocalLoader<D> extends AsyncTaskLoader<List<D>> {
     }
 
     /**
-     * Performs a query to local database
-     * @param cache data cache object
-     * @return loaded list
+     * @return default columns names for selection the items from database
      */
-    protected abstract List<D> tryLoadData(Cache cache);
+    protected abstract String[] getSelectionColumns();
+
+    /**
+     * @return default columns values for selection the items from database
+     */
+    protected abstract String[] getSelectionColumnsValues();
+
+    /**
+     * @return dao for retrieving list of items
+     */
+    protected abstract DatabaseDao<D> getDatabaseDao();
 }

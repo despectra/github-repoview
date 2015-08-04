@@ -4,18 +4,16 @@ import android.content.Context;
 
 import com.despectra.githubrepoview.cache.BranchesSyncManager;
 import com.despectra.githubrepoview.cache.CacheSyncManager;
-import com.despectra.githubrepoview.cache.db.Cache;
+import com.despectra.githubrepoview.cache.db.BranchesDao;
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
 import com.despectra.githubrepoview.models.realm.Branch;
 import com.despectra.githubrepoview.models.realm.Repo;
 import com.despectra.githubrepoview.models.realm.User;
 import com.despectra.githubrepoview.rest.GitHubService;
-import com.despectra.githubrepoview.sqlite.FriendsTable;
-import com.despectra.githubrepoview.sqlite.ReposTable;
+import com.despectra.githubrepoview.sqlite.BranchesTable;
+import com.squareup.picasso.Cache;
 
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmList;
 
 /**
  * Branches list async loader
@@ -35,17 +33,31 @@ public class BranchesLoader extends ListLoader<Branch> {
     }
 
     @Override
+    protected String[] getLocalWhereCols() {
+        return new String[] {
+                BranchesTable.COLUMN_REPO_ID
+        };
+    }
+
+    @Override
+    protected String[] getLocalWhereColsValues() {
+        return new String[] {
+                String.valueOf(mRepo.getId())
+        };
+    }
+
+    @Override
     protected List<Branch> loadItemsFromNetwork(GitHubService restService) {
         return restService.getRepoBranches(mOwner.getLogin(), mRepo.getName());
     }
 
     @Override
-    protected List<Branch> loadItemsFromCache(Cache cache) {
-        return cache.getBranchesByRepoId(mRepo.getId());
+    protected DatabaseDao<Branch> getDatabaseDao() {
+        return new BranchesDao(getContext());
     }
 
     @Override
-    protected CacheSyncManager getCacheSyncManager() {
-        return new BranchesSyncManager(getContext(), mRepo);
+    protected CacheSyncManager<Branch, String> getCacheSyncManager() {
+        return new BranchesSyncManager(new BranchesDao(getContext()), mRepo);
     }
 }

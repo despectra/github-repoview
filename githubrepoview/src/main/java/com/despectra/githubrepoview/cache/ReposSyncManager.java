@@ -2,6 +2,8 @@ package com.despectra.githubrepoview.cache;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
+import com.despectra.githubrepoview.cache.db.ReposDao;
 import com.despectra.githubrepoview.models.realm.Repo;
 import com.despectra.githubrepoview.models.realm.User;
 
@@ -14,8 +16,8 @@ public class ReposSyncManager extends CacheSyncManager<Repo, Long> {
 
     private final User mRepoOwner;
 
-    public ReposSyncManager(Context context, User owner) {
-        super(context);
+    public ReposSyncManager(ReposDao dao, User owner) {
+        super(dao);
         mRepoOwner = owner;
     }
 

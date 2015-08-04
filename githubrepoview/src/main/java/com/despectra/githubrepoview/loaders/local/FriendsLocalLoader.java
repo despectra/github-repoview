@@ -2,12 +2,11 @@ package com.despectra.githubrepoview.loaders.local;
 
 import android.content.Context;
 
-import com.despectra.githubrepoview.cache.db.Cache;
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
+import com.despectra.githubrepoview.cache.db.FriendsDao;
 import com.despectra.githubrepoview.models.realm.User;
 
 import java.util.List;
-
-import io.realm.Realm;
 
 /**
  * Loader for retrieving friends list from local database
@@ -19,8 +18,18 @@ public class FriendsLocalLoader extends LocalLoader<User> {
     }
 
     @Override
-    protected List<User> tryLoadData(Cache cache) {
-        return cache.getAllFriends();
+    protected String[] getSelectionColumnsValues() {
+        return null;
+    }
+
+    @Override
+    protected String[] getSelectionColumns() {
+        return null;
+    }
+
+    @Override
+    protected DatabaseDao<User> getDatabaseDao() {
+        return new FriendsDao(getContext());
     }
 
 }

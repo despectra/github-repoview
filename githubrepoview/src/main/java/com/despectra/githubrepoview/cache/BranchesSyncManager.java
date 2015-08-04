@@ -2,6 +2,8 @@ package com.despectra.githubrepoview.cache;
 
 import android.content.Context;
 
+import com.despectra.githubrepoview.cache.db.BranchesDao;
+import com.despectra.githubrepoview.cache.db.DatabaseDao;
 import com.despectra.githubrepoview.models.realm.Branch;
 import com.despectra.githubrepoview.models.realm.Repo;
 
@@ -14,8 +16,8 @@ public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
     private final Repo mParentRepo;
 
-    public BranchesSyncManager(Context context, Repo parentRepo) {
-        super(context);
+    public BranchesSyncManager(BranchesDao dao, Repo parentRepo) {
+        super(dao);
         mParentRepo = parentRepo;
     }
 
@@ -31,7 +33,6 @@ public class BranchesSyncManager extends CacheSyncManager<Branch, String> {
 
     @Override
     protected void onCreateLocalItem(Branch localItem, Branch networkItem) {
-        localItem.setId(getDbWriteStrategy().getNextItemId(Branch.class));
         localItem.setRepoId(mParentRepo.getId());
         localItem.setName(networkItem.getName());
     }

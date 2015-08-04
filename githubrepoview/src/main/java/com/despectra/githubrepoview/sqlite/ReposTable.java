@@ -26,6 +26,20 @@ public class ReposTable {
             + COLUMN_WATCHERS_COUNT + " integer" +
             ");";
 
+    public static final String[] ALL_COLUMNS = {
+            COLUMN_ID,
+            COLUMN_OWNER_ID,
+            COLUMN_NAME,
+            COLUMN_DESCRIPTION,
+            COLUMN_FORKS_COUNT,
+            COLUMN_STARS_COUNT,
+            COLUMN_WATCHERS_COUNT
+    };
+
+    public static final String SQL_INSERT = "insert into repos (_id, ownerId, name, description, forks_count, stars_count, watchers_count) values(?, ?, ?, ?, ?, ?, ?)";
+    public static final String SQL_UPDATE = "update repos set ownerId = ?, name = ?, description = ?, forks_count = ?, stars_count = ?, watchers_count = ? where _id = ?";
+    public static final String SQL_DELETE = "delete from repos where _id = ?";
+
     public static void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE);
     }
