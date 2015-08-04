@@ -1,11 +1,13 @@
 package com.despectra.githubrepoview.fragments;
 
+import android.app.Fragment;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
+import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
@@ -64,7 +66,16 @@ public class ReposFragment extends ItemsListFragment<Repo> {
     }
 
     @Override
-    public void onAdapterItemClick(Repo item, View itemView, int position) {
-
+    public void onAdapterItemClick(Repo repo, View itemView, int position) {
+        Bundle args = new Bundle();
+        Gson gson = Utils.getDefaultGsonInstance();
+        args.putString(BranchesFragment.OWNER_ARG, gson.toJson(mRepoOwner, User.class));
+        args.putString(BranchesFragment.REPO_ARG, gson.toJson(repo, Repo.class));
+        BranchesFragment fragment = (BranchesFragment)
+                Fragment.instantiate(getActivity(), BranchesFragment.class.getName(), args);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, BranchesFragment.TAG)
+                .addToBackStack(BranchesFragment.TAG)
+                .commit();
     }
 }
