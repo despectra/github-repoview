@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.view.View;
 
+import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.Utils;
@@ -38,7 +39,7 @@ public class FriendsActivity extends ItemsListActivity<User> {
     }
 
     @Override
-    protected ListAdapter createListAdapter() {
+    protected ListAdapter<User, ? extends ClickableViewHolder> createListAdapter() {
         return new FriendsAdapter();
     }
 

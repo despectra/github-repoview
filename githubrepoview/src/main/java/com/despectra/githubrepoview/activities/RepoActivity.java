@@ -3,6 +3,7 @@ package com.despectra.githubrepoview.activities;
 import android.content.Loader;
 import android.view.View;
 
+import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
@@ -40,7 +41,7 @@ public class RepoActivity extends ItemsListActivity<Branch> {
     }
 
     @Override
-    protected ListAdapter createListAdapter() {
+    protected ListAdapter<Branch, ? extends ClickableViewHolder> createListAdapter() {
         return new BranchesAdapter();
     }
 

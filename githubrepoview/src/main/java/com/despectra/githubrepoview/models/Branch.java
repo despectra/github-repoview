@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Branch extends RealmObject {
+public class Branch {
 
     @PrimaryKey
     private long id;
@@ -53,21 +53,8 @@ public class Branch extends RealmObject {
         return repoId;
     }
 
-
     public void setRepoId(long id) {
         repoId = id;
-    }
-
-    /**
-     * Creates a new Branch instance with values filled from given branch
-     * @param branch given branch
-     * @return new branch
-     */
-    public static Branch copy(Branch branch) {
-        Branch copiedBranch = new Branch();
-        copiedBranch.setName(branch.getName());
-        copiedBranch.setRepoId(branch.getRepoId());
-        return copiedBranch;
     }
 
 }

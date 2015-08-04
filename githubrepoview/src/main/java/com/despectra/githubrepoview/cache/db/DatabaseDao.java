@@ -37,6 +37,7 @@ public abstract class DatabaseDao<T> {
     public void open() {
         SQLiteOpenHelper helper = new DatabaseHelper(mContext);
         mDatabase = helper.getWritableDatabase();
+        mDatabase.execSQL("PRAGMA foreign_keys=ON;");
         if(mInsertStatement == null) {
             mInsertStatement = mDatabase.compileStatement(getInsertSql());
         }

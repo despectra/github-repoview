@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -112,7 +113,7 @@ public class UserReposActivity extends ItemsListActivity<Repo> {
     }
 
     @Override
-    protected ListAdapter createListAdapter() {
+    protected ListAdapter<Repo, ? extends RecyclerView.ViewHolder> createListAdapter() {
         return new ReposAdapter();
     }
 

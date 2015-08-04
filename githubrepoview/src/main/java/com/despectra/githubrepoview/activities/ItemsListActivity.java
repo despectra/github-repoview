@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.LogoutDialog;
 import com.despectra.githubrepoview.R;
@@ -28,7 +29,7 @@ import io.realm.RealmObject;
  * Abstract activity that renders items into RecyclerView
  * @param <D> item type parameter
  */
-public abstract class ItemsListActivity<D extends RealmObject> extends AppCompatActivity
+public abstract class ItemsListActivity<D> extends AppCompatActivity
         implements
         ListAdapter.OnAdapterItemClickListener<D>,
         SearchView.OnQueryTextListener,
@@ -41,9 +42,8 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
     private static final String LOGOUT_CONFIRM_DIALOG = "logoutDialog";
 
     private RecyclerView mItemsView;
-    private ListAdapter mItemsAdapter;
+    private ListAdapter<D, ? extends ClickableViewHolder> mItemsAdapter;
     private Toolbar mToolbar;
-    private SearchView mSearchView;
 
     /**
      * Loader callbacks for both local and network loader
@@ -133,8 +133,8 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
         mToolbar.inflateMenu(R.menu.main_menu);
         MenuItem searchItem = mToolbar.getMenu().findItem(R.id.search);
         MenuItemCompat.setOnActionExpandListener(searchItem, this);
-        mSearchView = (SearchView) searchItem.getActionView();
-        mSearchView.setOnQueryTextListener(this);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -232,7 +232,7 @@ public abstract class ItemsListActivity<D extends RealmObject> extends AppCompat
      * Generates concrete list adapter
      * @return list adapter
      */
-    protected abstract ListAdapter createListAdapter();
+    protected abstract ListAdapter<D, ? extends ClickableViewHolder> createListAdapter();
 
     /**
      * Handles adapter item click event

@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * User model class
  */
-public class User extends RealmObject {
+public class User {
 
     @PrimaryKey
     @Expose
@@ -29,9 +29,6 @@ public class User extends RealmObject {
     @Expose
     private String email;
 
-
-
-    private RealmList<Repo> repos;
 
     /**
      *
@@ -157,20 +154,6 @@ public class User extends RealmObject {
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public RealmList<Repo> getRepos() {
-        return repos;
-    }
-
-    public void setRepos(RealmList<Repo> repos) {
-        this.repos = repos;
-    }
-
-    public static User copy(User user) {
-        User copiedUser = new User();
-        fillUserPrimitives(copiedUser, user);
-        return copiedUser;
     }
 
     /**

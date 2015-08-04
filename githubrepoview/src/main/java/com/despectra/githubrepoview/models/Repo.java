@@ -7,7 +7,7 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Repo extends RealmObject {
+public class Repo {
 
     @PrimaryKey
     @Expose
@@ -25,8 +25,6 @@ public class Repo extends RealmObject {
     @Expose
     @SerializedName("watchers_count")
     private int watchersCount;
-
-    private RealmList<Branch> branches;
 
     private long ownerId;
 
@@ -138,32 +136,12 @@ public class Repo extends RealmObject {
         this.watchersCount = watchersCount;
     }
 
-
-    public RealmList<Branch> getBranches() {
-        return branches;
-    }
-
-    public void setBranches(RealmList<Branch> branches) {
-        this.branches = branches;
-    }
-
     public long getOwnerId() {
         return ownerId;
     }
 
     public void setOwnerId(long ownerId) {
         this.ownerId = ownerId;
-    }
-
-    /**
-     * Creates a new Repo instance with values filled from given repo
-     * @param repo given repo
-     * @return new repo
-     */
-    public static Repo copy(Repo repo) {
-        Repo copiedRepo = new Repo();
-        fillRepoPrimitives(copiedRepo, repo);
-        return copiedRepo;
     }
 
     /**
