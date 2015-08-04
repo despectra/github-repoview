@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         if(LoginInfo.getLoggedUser(this) != null) {
             //if we are logged in, jump to main activity
-            launchFriendsActivity();
+            launchMainActivity();
             return;
         }
         setContentView(R.layout.activity_login);
@@ -150,8 +150,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * Launches main activity after successful login
      */
-    private void launchFriendsActivity() {
-        Intent intent = new Intent(this, FriendsActivity.class);
+    private void launchMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LoginLoader loginLoader = (LoginLoader) loader;
         if (loginLoader.loadingSucceeded()) {
             prepareDatabase();
-            launchFriendsActivity();
+            launchMainActivity();
         } else {
             Error error = loginLoader.getError();
             Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();

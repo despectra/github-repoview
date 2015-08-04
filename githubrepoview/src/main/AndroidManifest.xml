@@ -21,23 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.FriendsActivity"
-            android:label="@string/title_activity_friends" >
-        </activity>
-        <activity
-            android:name=".activities.UserReposActivity"
-            android:label="@string/title_activity_user_repos"
-            android:parentActivityName=".activities.FriendsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.FriendsActivity" />
-        </activity>
-        <activity
-            android:name=".activities.RepoActivity"
-            android:parentActivityName=".activities.UserReposActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.UserReposActivity" />
+            android:name=".activities.MainActivity"
+            android:label="Main Activity">
         </activity>
     </application>
 

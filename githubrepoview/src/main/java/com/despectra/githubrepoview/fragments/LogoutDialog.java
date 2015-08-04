@@ -1,18 +1,21 @@
-package com.despectra.githubrepoview;
+package com.despectra.githubrepoview.fragments;
 
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+
+import com.despectra.githubrepoview.R;
 
 /**
  * Very simple logout confirmation dialog
  */
 public class LogoutDialog extends DialogFragment {
 
+    public static final String TAG = "LogoutDialog";
     private Callback mCallback;
 
     @NonNull
