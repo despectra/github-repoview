@@ -1,5 +1,6 @@
 package com.despectra.githubrepoview.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.activities.MainActivity;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
 
@@ -25,7 +28,7 @@ import java.util.List;
  * fragment that shows a list of items from data source <br>
  * Parametrized by item type <D>
  */
-public abstract class ItemsListFragment<D> extends Fragment implements ListAdapter.OnAdapterItemClickListener<D> {
+public abstract class ItemsListFragment<D> extends Fragment implements ListAdapter.OnAdapterItemClickListener<D>, SearchView.OnQueryTextListener {
 
     //loader ids
     public static final int LOCAL_LOADER_ID = 0;
@@ -88,6 +91,18 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
         }
     };
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        MainActivity mainActivity = (MainActivity) activity;
+        mainActivity.setSearchViewListener(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,4 +150,15 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
     protected abstract Loader<List<D>> createLocalLoader();
     protected abstract Loader<List<D>> createNetworkLoader();
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        mItemsAdapter.updateSearchFilter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        mItemsAdapter.updateSearchFilter(newText);
+        return true;
+    }
 }

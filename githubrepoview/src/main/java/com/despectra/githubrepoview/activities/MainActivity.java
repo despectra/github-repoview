@@ -3,7 +3,10 @@ package com.despectra.githubrepoview.activities;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
             performLogout();
         }
     };
+    private SearchView.OnQueryTextListener mSearchViewListener;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new FriendsFragment(), FriendsFragment.TAG)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         } else {
             LogoutDialog dialog =  (LogoutDialog) getFragmentManager().findFragmentByTag(LogoutDialog.TAG);
@@ -48,10 +54,20 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    public void setSearchViewListener(SearchView.OnQueryTextListener listener) {
+        mSearchViewListener = listener;
+        if(mSearchView != null) {
+            mSearchView.setOnQueryTextListener(mSearchViewListener);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setOnQueryTextListener(mSearchViewListener);
         return true;
     }
 

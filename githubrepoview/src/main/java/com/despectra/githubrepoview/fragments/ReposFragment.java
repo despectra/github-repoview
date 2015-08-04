@@ -1,13 +1,18 @@
 package com.despectra.githubrepoview.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Loader;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.RoundedTransformation;
 import com.despectra.githubrepoview.SimpleDividerItemDecoration;
 import com.despectra.githubrepoview.Utils;
 import com.despectra.githubrepoview.adapters.ListAdapter;
@@ -17,6 +22,9 @@ import com.despectra.githubrepoview.loaders.network.ReposLoader;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -73,8 +81,10 @@ public class ReposFragment extends ItemsListFragment<Repo> {
         args.putString(BranchesFragment.REPO_ARG, gson.toJson(repo, Repo.class));
         BranchesFragment fragment = (BranchesFragment)
                 Fragment.instantiate(getActivity(), BranchesFragment.class.getName(), args);
-        getFragmentManager().beginTransaction()
+        getFragmentManager()
+                .beginTransaction()
                 .replace(R.id.fragment_container, fragment, BranchesFragment.TAG)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(BranchesFragment.TAG)
                 .commit();
     }

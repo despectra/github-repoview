@@ -1,6 +1,7 @@
 package com.despectra.githubrepoview.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -63,6 +64,7 @@ public class FriendsFragment extends ItemsListFragment<User> {
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, reposFragment, ReposFragment.TAG)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(ReposFragment.TAG)
                 .commit();
     }
