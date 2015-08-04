@@ -3,7 +3,6 @@ package com.despectra.githubrepoview.activities;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -13,9 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.despectra.githubrepoview.LoginInfo;
-import com.despectra.githubrepoview.fragments.LogoutDialog;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.fragments.FriendsFragment;
+import com.despectra.githubrepoview.fragments.LogoutDialog;
 
 /**
  * Activity that contains different items list fragments

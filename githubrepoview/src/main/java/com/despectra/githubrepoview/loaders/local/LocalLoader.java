@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

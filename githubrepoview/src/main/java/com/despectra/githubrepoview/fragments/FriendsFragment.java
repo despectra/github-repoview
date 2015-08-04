@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
@@ -32,6 +31,9 @@ public class FriendsFragment extends ItemsListFragment<User> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         User currentUser = LoginInfo.getLoggedUser(getActivity());
+        if(currentUser == null) {
+            throw new IllegalStateException("User must be logged in");
+        }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(currentUser.getLogin());
         actionBar.setSubtitle("");

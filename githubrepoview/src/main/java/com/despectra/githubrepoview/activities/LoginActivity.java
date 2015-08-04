@@ -16,9 +16,9 @@ import com.despectra.githubrepoview.App;
 import com.despectra.githubrepoview.BuildConfig;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.loaders.Error;
 import com.despectra.githubrepoview.loaders.network.LoginLoader;
 import com.despectra.githubrepoview.models.User;
-import com.despectra.githubrepoview.loaders.Error;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 /**

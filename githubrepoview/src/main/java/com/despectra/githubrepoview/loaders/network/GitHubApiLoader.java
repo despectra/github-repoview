@@ -4,8 +4,8 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 import com.despectra.githubrepoview.LoginInfo;
-import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.loaders.Error;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 import com.despectra.githubrepoview.rest.RestServiceGenerator;
 

@@ -1,7 +1,5 @@
 package com.despectra.githubrepoview.cache;
 
-import android.content.Context;
-
 import com.despectra.githubrepoview.SetOperations;
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
 
