@@ -1,13 +1,8 @@
 package com.despectra.githubrepoview.cache;
 
-import android.content.Context;
-
 import com.despectra.githubrepoview.cache.db.BranchesDao;
-import com.despectra.githubrepoview.cache.db.DatabaseDao;
-import com.despectra.githubrepoview.models.realm.Branch;
-import com.despectra.githubrepoview.models.realm.Repo;
-
-import io.realm.Realm;
+import com.despectra.githubrepoview.models.Branch;
+import com.despectra.githubrepoview.models.Repo;
 
 /**
  * Class for refreshing branches records in cache

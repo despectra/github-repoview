@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
 import com.despectra.githubrepoview.cache.db.FriendsDao;
-import com.despectra.githubrepoview.models.realm.User;
-
-import java.util.List;
+import com.despectra.githubrepoview.models.User;
 
 /**
  * Loader for retrieving friends list from local database

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
-import com.despectra.githubrepoview.models.realm.Branch;
+import com.despectra.githubrepoview.models.Branch;
 
 /**
  * Adapter for rendering branches list

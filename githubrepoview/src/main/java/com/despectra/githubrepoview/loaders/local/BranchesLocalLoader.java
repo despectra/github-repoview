@@ -4,11 +4,9 @@ import android.content.Context;
 
 import com.despectra.githubrepoview.cache.db.BranchesDao;
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
-import com.despectra.githubrepoview.models.realm.Branch;
-import com.despectra.githubrepoview.models.realm.Repo;
+import com.despectra.githubrepoview.models.Branch;
+import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.sqlite.BranchesTable;
-
-import java.util.List;
 
 /**
  * Loader of branches from local cache

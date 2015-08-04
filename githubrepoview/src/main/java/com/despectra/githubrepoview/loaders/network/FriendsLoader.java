@@ -6,7 +6,7 @@ import com.despectra.githubrepoview.cache.CacheSyncManager;
 import com.despectra.githubrepoview.cache.FriendsSyncManager;
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
 import com.despectra.githubrepoview.cache.db.FriendsDao;
-import com.despectra.githubrepoview.models.realm.User;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
 import java.util.List;

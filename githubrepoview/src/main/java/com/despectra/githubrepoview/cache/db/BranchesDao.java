@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
-import com.despectra.githubrepoview.models.realm.Branch;
+import com.despectra.githubrepoview.models.Branch;
 import com.despectra.githubrepoview.sqlite.BranchesTable;
 
 /**

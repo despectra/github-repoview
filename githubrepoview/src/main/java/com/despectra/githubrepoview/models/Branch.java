@@ -1,4 +1,4 @@
-package com.despectra.githubrepoview.models.realm;
+package com.despectra.githubrepoview.models;
 
 import com.google.gson.annotations.Expose;
 

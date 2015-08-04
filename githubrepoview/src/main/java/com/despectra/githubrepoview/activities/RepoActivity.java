@@ -10,9 +10,9 @@ import com.despectra.githubrepoview.adapters.BranchesAdapter;
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.local.BranchesLocalLoader;
 import com.despectra.githubrepoview.loaders.network.BranchesLoader;
-import com.despectra.githubrepoview.models.realm.Branch;
-import com.despectra.githubrepoview.models.realm.Repo;
-import com.despectra.githubrepoview.models.realm.User;
+import com.despectra.githubrepoview.models.Branch;
+import com.despectra.githubrepoview.models.Repo;
+import com.despectra.githubrepoview.models.User;
 import com.google.gson.Gson;
 
 import java.util.List;

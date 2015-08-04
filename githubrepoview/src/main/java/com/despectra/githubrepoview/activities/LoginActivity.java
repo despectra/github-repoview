@@ -17,11 +17,9 @@ import com.despectra.githubrepoview.BuildConfig;
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.loaders.network.LoginLoader;
-import com.despectra.githubrepoview.models.realm.User;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.loaders.Error;
 import com.pnikosis.materialishprogress.ProgressWheel;
-
-import io.realm.Realm;
 
 /**
  * Simple login activity with 2 fields and 1 button

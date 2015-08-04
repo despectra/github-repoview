@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
-import com.despectra.githubrepoview.models.realm.User;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.sqlite.FriendsTable;
 
 /**

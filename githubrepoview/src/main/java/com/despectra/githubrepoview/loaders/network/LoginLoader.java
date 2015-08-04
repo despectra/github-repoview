@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Base64;
 
 import com.despectra.githubrepoview.LoginInfo;
-import com.despectra.githubrepoview.models.realm.User;
+import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 
 

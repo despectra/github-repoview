@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
-import com.despectra.githubrepoview.models.realm.Repo;
+import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.sqlite.ReposTable;
 
 /**
