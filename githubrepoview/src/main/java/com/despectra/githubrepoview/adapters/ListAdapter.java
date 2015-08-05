@@ -1,9 +1,15 @@
 package com.despectra.githubrepoview.adapters;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.despectra.githubrepoview.ClickableViewHolder;
+import com.despectra.githubrepoview.R;
+import com.despectra.githubrepoview.databinding.UserItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +18,7 @@ import java.util.List;
  * Abstract RecyclerView adapter for rendering item views from simple java lists
  * Parametrized by list item type D and clickable view holder VH
  */
-public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class ListAdapter<D> extends RecyclerView.Adapter<ClickableViewHolder> {
 
     /**
      * List itself
@@ -51,6 +57,14 @@ public abstract class ListAdapter<D, VH extends ClickableViewHolder> extends Rec
     public void setAdapterItemClickListener(OnAdapterItemClickListener<D> listener) {
         mAdapterItemClickListener = listener;
     }
+
+    @Override
+    public ClickableViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), getItemLayoutRes(), viewGroup, false);
+        return new ClickableViewHolder(binding, mItemClickListener);
+    }
+
+    protected abstract int getItemLayoutRes();
 
     /**
      * Returns item object by its adapter position

@@ -3,11 +3,8 @@ package com.despectra.githubrepoview.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.annotations.PrimaryKey;
-
 public class Repo {
 
-    @PrimaryKey
     @Expose
     private long id;
     @Expose

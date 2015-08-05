@@ -52,7 +52,7 @@ public class ReposFragment extends ItemsListFragment<Repo> {
     }
 
     @Override
-    protected ListAdapter<Repo, ? extends ClickableViewHolder> createListAdapter() {
+    protected ListAdapter<Repo> createListAdapter() {
         return new ReposAdapter(this);
     }
 

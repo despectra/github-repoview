@@ -35,7 +35,7 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
     public static final int NETWORK_LOADER_ID = 1;
 
     private RecyclerView mItemsView;
-    private ListAdapter<D, ? extends ClickableViewHolder> mItemsAdapter;
+    private ListAdapter<D> mItemsAdapter;
 
     /**
      * Loader callbacks for both local and network loader
@@ -145,7 +145,7 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
         return R.layout.fragment_items_list;
     }
 
-    protected abstract ListAdapter<D,? extends ClickableViewHolder> createListAdapter();
+    protected abstract ListAdapter<D> createListAdapter();
 
     protected abstract Loader<List<D>> createLocalLoader();
     protected abstract Loader<List<D>> createNetworkLoader();

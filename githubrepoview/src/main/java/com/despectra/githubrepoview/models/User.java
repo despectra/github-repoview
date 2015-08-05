@@ -3,14 +3,12 @@ package com.despectra.githubrepoview.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.annotations.PrimaryKey;
 
 /**
  * User model class
  */
 public class User {
 
-    @PrimaryKey
     @Expose
     private long id;
     @Expose

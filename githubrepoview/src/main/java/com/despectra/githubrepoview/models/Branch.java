@@ -2,11 +2,9 @@ package com.despectra.githubrepoview.models;
 
 import com.google.gson.annotations.Expose;
 
-import io.realm.annotations.PrimaryKey;
 
 public class Branch {
 
-    @PrimaryKey
     private long id;
     @Expose
     private String name;

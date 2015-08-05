@@ -1,11 +1,13 @@
 package com.despectra.githubrepoview;
 
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import io.realm.RealmObject;
+import com.squareup.picasso.Picasso;
 
 /**
  * Utility class
@@ -17,17 +19,18 @@ public class Utils {
      */
     public static Gson getDefaultGsonInstance() {
         return new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
                 .create();
     }
+
+    @BindingAdapter("app:imageUrl")
+    public static void loadImageAsync(ImageView view, String url) {
+        Picasso.with(view.getContext())
+                .load(url)
+                .resizeDimen(R.dimen.item_icon_width, R.dimen.item_icon_height)
+                .centerCrop()
+                .transform(new RoundedTransformation(40, 0))
+                .placeholder(R.drawable.avatar_placeholder)
+                .into(view);
+    }
+
 }

@@ -1,30 +1,33 @@
 package com.despectra.githubrepoview;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
 /**
  * Abstract view holder for handling click events on items
  */
-public abstract class ClickableViewHolder extends RecyclerView.ViewHolder {
+public class ClickableViewHolder extends RecyclerView.ViewHolder {
 
+    private ViewDataBinding mBinding;
     private OnItemClickListener mListener;
 
-    public ClickableViewHolder(final View itemView, OnItemClickListener listener) {
-        super(itemView);
+    public ClickableViewHolder(final ViewDataBinding binding, OnItemClickListener listener) {
+        super(binding.getRoot());
         mListener = listener;
-        itemView.setOnClickListener(new View.OnClickListener() {
+        mBinding = binding;
+        mBinding.setVariable(com.despectra.githubrepoview.BR.clickListener, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onItemClick(itemView, getAdapterPosition());
                 }
             }
         });
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
+    public ViewDataBinding getBinding() {
+        return mBinding;
     }
 
     /**

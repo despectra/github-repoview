@@ -40,7 +40,7 @@ public class FriendsFragment extends ItemsListFragment<User> {
     }
 
     @Override
-    protected ListAdapter<User, ? extends ClickableViewHolder> createListAdapter() {
+    protected ListAdapter<User> createListAdapter() {
         return new FriendsAdapter(this);
     }
 

@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable name="clickListener" type="android.view.View.OnClickListener" />
         <variable name="branch" type="com.despectra.githubrepoview.models.Branch" />
     </data>
 
@@ -16,7 +17,8 @@
         android:paddingRight="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:gravity="center_vertical"
-        android:textColor='@{branch.name.equalsTo("master") ? @android:color/green : @android:color/black}'
+        android:onClick="@{clickListener}"
+        android:textColor='@{branch.name.equals("master") ? @color/md_green_800 : @android:color/black}'
         android:text="@{branch.name}">
 
     </TextView>

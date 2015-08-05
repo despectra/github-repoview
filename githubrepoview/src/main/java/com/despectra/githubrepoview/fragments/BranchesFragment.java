@@ -54,7 +54,7 @@ public class BranchesFragment extends ItemsListFragment<Branch> {
     }
 
     @Override
-    protected ListAdapter<Branch, ? extends ClickableViewHolder> createListAdapter() {
+    protected ListAdapter<Branch> createListAdapter() {
         return new BranchesAdapter(this);
     }
 
