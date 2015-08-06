@@ -8,6 +8,7 @@ import com.despectra.githubrepoview.loaders.Error;
 import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.rest.GitHubService;
 import com.despectra.githubrepoview.rest.RestServiceGenerator;
+import com.despectra.githubrepoview.viewmodel.UserViewModel;
 
 import retrofit.RetrofitError;
 
@@ -41,7 +42,7 @@ public abstract class GitHubApiLoader<D> extends AsyncTaskLoader<D> {
     public D loadInBackground() {
         String authorization = provideAuthorizationString();
         if(authorization == null) {
-            User currentUser = LoginInfo.getLoggedUser(getContext());
+            UserViewModel currentUser = LoginInfo.getLoggedUser(getContext());
             if(currentUser == null) {
                 throw new IllegalStateException("Missing current user data in shared prefs");
             }

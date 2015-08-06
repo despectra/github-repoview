@@ -23,13 +23,13 @@ public class FriendsFragment extends ItemsListFragment<FriendsListViewModel, Use
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        User currentUser = LoginInfo.getLoggedUser(getActivity());
+        UserViewModel currentUser = LoginInfo.getLoggedUser(getActivity());
         if(currentUser == null) {
             throw new IllegalStateException("User must be logged in");
         }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(currentUser.getLogin());
-        actionBar.setSubtitle("");
+        actionBar.setSubtitle(currentUser.getShortInfo());
     }
 
     @Override

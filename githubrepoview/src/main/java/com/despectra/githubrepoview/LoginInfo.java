@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.viewmodel.UserViewModel;
 import com.google.gson.Gson;
 
 /**
@@ -47,14 +48,13 @@ public class LoginInfo {
      * @param context context to access shared prefs
      * @return user object
      */
-    public static User getLoggedUser(Context context) {
+    public static UserViewModel getLoggedUser(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = Utils.getDefaultGsonInstance();
         String userData = preferences.getString(USER_DATA_KEY, null);
         if(userData == null) {
             return null;
         }
-        return gson.fromJson(userData, User.class);
+        return UserViewModel.deserialize(userData);
     }
 
     /**
