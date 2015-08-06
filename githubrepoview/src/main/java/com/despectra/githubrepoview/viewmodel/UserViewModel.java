@@ -3,7 +3,7 @@ package com.despectra.githubrepoview.viewmodel;
 import com.despectra.githubrepoview.models.User;
 
 /**
- * Created by shvedchikov on 06/08/15.
+ * USer presentation model
  */
 public class UserViewModel extends ItemViewModel<User> {
 

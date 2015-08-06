@@ -1,9 +1,9 @@
 package com.despectra.githubrepoview.viewmodel;
 
 /**
- *
+ * Abstract presentation model class
  */
-public class ItemViewModel<BM> {
+public abstract class ItemViewModel<BM> {
     BM mModel;
 
     public ItemViewModel(BM model) {
