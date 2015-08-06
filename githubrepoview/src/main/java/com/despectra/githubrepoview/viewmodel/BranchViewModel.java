@@ -8,7 +8,7 @@ import com.despectra.githubrepoview.models.Branch;
 public class BranchViewModel extends ItemViewModel<Branch> {
 
     public BranchViewModel(Branch model) {
-        super(model);
+        super(model, Branch.class);
     }
 
     public String getName() {

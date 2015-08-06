@@ -3,9 +3,7 @@ package com.despectra.githubrepoview.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -17,96 +15,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.activities.MainActivity;
 import com.despectra.githubrepoview.adapters.ListAdapter;
-import com.despectra.githubrepoview.loaders.network.GitHubApiLoader;
-
-import java.util.List;
+import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
+import com.despectra.githubrepoview.viewmodel.ItemViewModel;
 
 /**
  * fragment that shows a list of items from data source <br>
  * Parametrized by item type <D>
  */
-public abstract class ItemsListFragment<D> extends Fragment implements ListAdapter.OnAdapterItemClickListener<D>, SearchView.OnQueryTextListener {
-
-    //loader ids
-    public static final int LOCAL_LOADER_ID = 0;
-    public static final int NETWORK_LOADER_ID = 1;
+public abstract class ItemsListFragment<LVM extends ItemListViewModel, IVM extends ItemViewModel<?>>
+        extends Fragment
+        implements ListAdapter.OnAdapterItemClickListener<IVM>, SearchView.OnQueryTextListener {
 
     private RecyclerView mItemsView;
-    private ListAdapter<D> mItemsAdapter;
-
-    /**
-     * Loader callbacks for both local and network loader
-     */
-    private LoaderManager.LoaderCallbacks<List<D>> mLocalLoaderCllbacks = new LoaderManager.LoaderCallbacks<List<D>>() {
-
-        @Override
-        public Loader<List<D>> onCreateLoader(int i, Bundle bundle) {
-            return createLocalLoader();
-        }
-
-        /**
-         * Handles local loader result
-         * Populates ListAdapter with obtained list
-         * @param loader finished loader
-         * @param localItems items obtained from local cache
-         */
-        @Override
-        public void onLoadFinished(Loader<List<D>> loader, List<D> localItems) {
-            mItemsAdapter.updateList(localItems);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<D>> loader) {
-            mItemsAdapter.updateList(null);
-        }
-    };
-
-    private LoaderManager.LoaderCallbacks<List<D>> mNetworkLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<D>>() {
-        @Override
-        public Loader<List<D>> onCreateLoader(int i, Bundle bundle) {
-            return createNetworkLoader();
-        }
-
-        /**
-         * Handles network loader result
-         * Forces local loader restarting
-         * @param loader finished loader
-         * @param items loaded items
-         */
-        @Override
-        public void onLoadFinished(Loader<List<D>> loader, List<D> items) {
-            GitHubApiLoader githubLoader = (GitHubApiLoader) loader;
-            if(githubLoader.loadingSucceeded()) {
-                ItemsListFragment.this.getLoaderManager().restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCllbacks);
-            } else {
-                Toast.makeText(getActivity(), githubLoader.getError().getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<D>> loader) {
-        }
-    };
+    private ItemListViewModel<IVM, ?> mListViewModel;
 
     public static ItemsListFragment getInstance(Context context, FragmentManager manager, String fname, Bundle args) {
         ItemsListFragment fragment = (ItemsListFragment) manager.findFragmentByTag(fname);
         if (fragment == null) {
             fragment = (ItemsListFragment) Fragment.instantiate(context, fname);
-        } else {
-            Log.e("app", "Reused fragment");
         }
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ItemsListFragment() {
-        Log.e("app", "Fragment construct");
     }
 
     @Override
@@ -117,21 +50,9 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        Log.e("app", "Fragment onCreate");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("app", "Fragment onDestroy");
+        mListViewModel = getListViewModel();
     }
 
     @Nullable
@@ -145,8 +66,7 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCllbacks);
-        getLoaderManager().initLoader(NETWORK_LOADER_ID, null, mNetworkLoaderCallbacks);
+        mListViewModel.requestData();
     }
 
     protected ActionBar getSupportActionBar() {
@@ -163,9 +83,8 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
             throw new IllegalStateException("Layout for ItemsListActivity should have RecyclerView with id=@android:id/list");
         }
         mItemsView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mItemsAdapter = createListAdapter();
-        mItemsAdapter.setAdapterItemClickListener(this);
-        mItemsView.setAdapter(mItemsAdapter);
+        mListViewModel.getAdapter().setAdapterItemClickListener(this);
+        mItemsView.setAdapter(mListViewModel.getAdapter());
     }
 
     protected RecyclerView getRecyclerView() {
@@ -176,20 +95,17 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
         return R.layout.fragment_items_list;
     }
 
-    protected abstract ListAdapter<D> createListAdapter();
-
-    protected abstract Loader<List<D>> createLocalLoader();
-    protected abstract Loader<List<D>> createNetworkLoader();
-
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mItemsAdapter.updateSearchFilter(query);
+        mListViewModel.filterData(query);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        mItemsAdapter.updateSearchFilter(newText);
+        mListViewModel.filterData(newText);
         return true;
     }
+
+    protected abstract ItemListViewModel<IVM,?> getListViewModel();
 }

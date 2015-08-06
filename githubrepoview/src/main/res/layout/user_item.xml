@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="clickListener" type="android.view.View.OnClickListener" />
-        <variable name="user" type="com.despectra.githubrepoview.models.User" />
+        <variable name="user" type="com.despectra.githubrepoview.viewmodel.UserViewModel" />
     </data>
 
     <RelativeLayout
@@ -20,8 +20,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            app:imageUrl="@{user.avatarUrl}"/>
+            android:layout_centerVertical="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.v7.internal.view.menu.MenuView;
 
 import com.despectra.githubrepoview.adapters.ListAdapter;
 import com.despectra.githubrepoview.loaders.local.LocalLoader;
@@ -26,12 +25,21 @@ public abstract class ItemListViewModel<VM extends ItemViewModel<BM>, BM> {
     private Context mContext;
     private LoaderManager mLoaderManager;
 
+    /**
+     * Loader callbacks for both local and network loader
+     */
     private LoaderManager.LoaderCallbacks<List<BM>> mLocalLoaderCallbacks = new LoaderManager.LoaderCallbacks<List<BM>>() {
         @Override
         public Loader<List<BM>> onCreateLoader(int id, Bundle args) {
             return createLocalLoader(mContext);
         }
 
+        /**
+         * Handles local loader result
+         * Populates ListAdapter with obtained list
+         * @param loader finished loader
+         * @param data items obtained from local cache
+         */
         @Override
         public void onLoadFinished(Loader<List<BM>> loader, List<BM> data) {
             mItems.clear();
@@ -52,6 +60,12 @@ public abstract class ItemListViewModel<VM extends ItemViewModel<BM>, BM> {
             return createNetworkLoader(mContext);
         }
 
+        /**
+         * Handles network loader result
+         * Forces local loader restarting
+         * @param loader finished loader
+         * @param data loaded items
+         */
         @Override
         public void onLoadFinished(Loader<List<BM>> loader, List<BM> data) {
             mLoaderManager.restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCallbacks);
@@ -73,6 +87,10 @@ public abstract class ItemListViewModel<VM extends ItemViewModel<BM>, BM> {
     public void requestData() {
         mLoaderManager.restartLoader(LOCAL_LOADER_ID, null, mLocalLoaderCallbacks);
         mLoaderManager.initLoader(NETWORK_LOADER_ID, null, mNetworkLoaderCallbacks);
+    }
+
+    public void filterData(String filter) {
+        mAdapter.updateSearchFilter(filter);
     }
 
     public ListAdapter<VM> getAdapter() {

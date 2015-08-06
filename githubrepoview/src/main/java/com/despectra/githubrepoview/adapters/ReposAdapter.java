@@ -1,23 +1,16 @@
 package com.despectra.githubrepoview.adapters;
 
-import android.databinding.ViewDataBinding;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.despectra.githubrepoview.BR;
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.databinding.RepoItemBinding;
-import com.despectra.githubrepoview.models.Repo;
+import com.despectra.githubrepoview.viewmodel.RepoViewModel;
 
 /**
  * Adapter for rendering list of user repos
  */
-public class ReposAdapter extends ListAdapter<Repo> {
+public class ReposAdapter extends ListAdapter<RepoViewModel> {
 
-    public ReposAdapter(OnAdapterItemClickListener<Repo> itemClickListener) {
+    public ReposAdapter(OnAdapterItemClickListener<RepoViewModel> itemClickListener) {
         super(itemClickListener);
     }
 
@@ -28,13 +21,13 @@ public class ReposAdapter extends ListAdapter<Repo> {
 
     @Override
     public void onBindViewHolder(ClickableViewHolder holder, int position) {
-        Repo repo = getItemAtPosition(position);
+        RepoViewModel repo = getItemAtPosition(position);
         RepoItemBinding binding = (RepoItemBinding) holder.getBinding();
         binding.setRepo(repo);
     }
 
     @Override
-    protected boolean testFilterPredicate(Repo item, String filter) {
+    protected boolean testFilterPredicate(RepoViewModel item, String filter) {
         return item.getName().contains(filter) || item.getDescription().contains(filter);
     }
 

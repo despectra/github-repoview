@@ -15,6 +15,11 @@ import com.despectra.githubrepoview.loaders.network.BranchesLoader;
 import com.despectra.githubrepoview.models.Branch;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.viewmodel.BranchViewModel;
+import com.despectra.githubrepoview.viewmodel.BranchesListViewModel;
+import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
+import com.despectra.githubrepoview.viewmodel.RepoViewModel;
+import com.despectra.githubrepoview.viewmodel.UserViewModel;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -22,25 +27,23 @@ import java.util.List;
 /**
  * fragment for rendering list of repo branches
  */
-public class BranchesFragment extends ItemsListFragment<Branch> {
+public class BranchesFragment extends ItemsListFragment<BranchesListViewModel, BranchViewModel> {
 
     public static final java.lang.String REPO_ARG = "repo";
     public static final java.lang.String OWNER_ARG = "owner";
-    public static final String TAG = "Branchesfragment";
-    private Repo mRepo;
-    private User mOwner;
+    private RepoViewModel mRepo;
+    private UserViewModel mOwner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         String repoJson = getArguments().getString(REPO_ARG);
         String ownerJson = getArguments().getString(OWNER_ARG);
         if(repoJson == null || ownerJson == null) {
             throw new IllegalStateException("Branches fragment must be instantiated with owner and repo item");
         }
-        Gson gson = Utils.getDefaultGsonInstance();
-        mRepo = gson.fromJson(repoJson, Repo.class);
-        mOwner = gson.fromJson(ownerJson, User.class);
+        mRepo = RepoViewModel.deserialize(repoJson);
+        mOwner = UserViewModel.deserialize(ownerJson);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -48,27 +51,16 @@ public class BranchesFragment extends ItemsListFragment<Branch> {
         super.onActivityCreated(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(mRepo.getName());
-        actionBar.setSubtitle(String.format("%s forks, %s stars, %s watchers",
-                mRepo.getForksCount(), mRepo.getStargazersCount(), mRepo.getWatchersCount()));
+        actionBar.setSubtitle(mRepo.getStats());
         getRecyclerView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
     }
 
     @Override
-    protected ListAdapter<Branch> createListAdapter() {
-        return new BranchesAdapter(this);
+    protected BranchesListViewModel getListViewModel() {
+        return new BranchesListViewModel(getActivity(), getLoaderManager(), mOwner, mRepo);
     }
 
     @Override
-    protected Loader<List<Branch>> createLocalLoader() {
-        return new BranchesLocalLoader(getActivity(), mRepo);
-    }
-
-    @Override
-    protected Loader<List<Branch>> createNetworkLoader() {
-        return new BranchesLoader(getActivity(), mOwner, mRepo);
-    }
-
-    @Override
-    public void onAdapterItemClick(Branch item, View itemView, int position) {
+    public void onAdapterItemClick(BranchViewModel item, View itemView, int position) {
     }
 }

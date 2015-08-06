@@ -18,6 +18,10 @@ import com.despectra.githubrepoview.loaders.local.ReposLocalLoader;
 import com.despectra.githubrepoview.loaders.network.ReposLoader;
 import com.despectra.githubrepoview.models.Repo;
 import com.despectra.githubrepoview.models.User;
+import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
+import com.despectra.githubrepoview.viewmodel.RepoViewModel;
+import com.despectra.githubrepoview.viewmodel.ReposListViewModel;
+import com.despectra.githubrepoview.viewmodel.UserViewModel;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -25,22 +29,20 @@ import java.util.List;
 /**
  * Fragment for rendering list of user repos
  */
-public class ReposFragment extends ItemsListFragment<Repo> {
+public class ReposFragment extends ItemsListFragment<ReposListViewModel, RepoViewModel> {
 
     public static final String USER_ARG = "user";
-    public static final String TAG = "ReposFragment";
 
-    private User mRepoOwner;
+    private UserViewModel mRepoOwner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         String userJson = getArguments().getString(USER_ARG);
         if(userJson == null) {
             throw new IllegalStateException("Repos fragment must be instantiated with owner user item");
         }
-        Gson gson = Utils.getDefaultGsonInstance();
-        mRepoOwner = gson.fromJson(userJson, User.class);
+        mRepoOwner = UserViewModel.deserialize(userJson);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -48,31 +50,20 @@ public class ReposFragment extends ItemsListFragment<Repo> {
         super.onActivityCreated(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(mRepoOwner.getName());
-        actionBar.setSubtitle(String.format("%s, %s", mRepoOwner.getCompany(), mRepoOwner.getLocation()));
+        actionBar.setSubtitle(mRepoOwner.getShortInfo());
         getRecyclerView().addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
     }
 
     @Override
-    protected ListAdapter<Repo> createListAdapter() {
-        return new ReposAdapter(this);
+    protected ReposListViewModel getListViewModel() {
+        return new ReposListViewModel(getActivity(), getLoaderManager(), mRepoOwner);
     }
 
     @Override
-    protected Loader<List<Repo>> createLocalLoader() {
-        return new ReposLocalLoader(getActivity(), mRepoOwner);
-    }
-
-    @Override
-    protected Loader<List<Repo>> createNetworkLoader() {
-        return new ReposLoader(getActivity(), mRepoOwner);
-    }
-
-    @Override
-    public void onAdapterItemClick(Repo repo, View itemView, int position) {
+    public void onAdapterItemClick(RepoViewModel repo, View itemView, int position) {
         Bundle args = new Bundle();
-        Gson gson = Utils.getDefaultGsonInstance();
-        args.putString(BranchesFragment.OWNER_ARG, gson.toJson(mRepoOwner, User.class));
-        args.putString(BranchesFragment.REPO_ARG, gson.toJson(repo, Repo.class));
+        args.putString(BranchesFragment.OWNER_ARG, mRepoOwner.serialize());
+        args.putString(BranchesFragment.REPO_ARG, repo.serialize());
 
         FragmentManager manager = getFragmentManager();
         String branchesFragmentName = BranchesFragment.class.getName();
@@ -85,4 +76,5 @@ public class ReposFragment extends ItemsListFragment<Repo> {
                 .addToBackStack(branchesFragmentName)
                 .commit();
     }
+
 }
