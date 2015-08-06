@@ -1,6 +1,7 @@
 package com.despectra.githubrepoview.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Loader;
 import android.os.Bundle;
@@ -72,13 +73,16 @@ public class ReposFragment extends ItemsListFragment<Repo> {
         Gson gson = Utils.getDefaultGsonInstance();
         args.putString(BranchesFragment.OWNER_ARG, gson.toJson(mRepoOwner, User.class));
         args.putString(BranchesFragment.REPO_ARG, gson.toJson(repo, Repo.class));
+
+        FragmentManager manager = getFragmentManager();
+        String branchesFragmentName = BranchesFragment.class.getName();
         BranchesFragment fragment = (BranchesFragment)
-                Fragment.instantiate(getActivity(), BranchesFragment.class.getName(), args);
+                ItemsListFragment.getInstance(getActivity(), manager, branchesFragmentName, args);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment, BranchesFragment.TAG)
+                .replace(R.id.fragment_container, fragment, branchesFragmentName)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(BranchesFragment.TAG)
+                .addToBackStack(branchesFragmentName)
                 .commit();
     }
 }

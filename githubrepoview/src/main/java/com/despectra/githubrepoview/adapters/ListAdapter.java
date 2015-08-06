@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.databinding.UserItemBinding;
+import com.despectra.githubrepoview.viewmodel.ItemViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

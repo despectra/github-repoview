@@ -2,7 +2,9 @@ package com.despectra.githubrepoview.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +94,21 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
         }
     };
 
+    public static ItemsListFragment getInstance(Context context, FragmentManager manager, String fname, Bundle args) {
+        ItemsListFragment fragment = (ItemsListFragment) manager.findFragmentByTag(fname);
+        if (fragment == null) {
+            fragment = (ItemsListFragment) Fragment.instantiate(context, fname);
+        } else {
+            Log.e("app", "Reused fragment");
+        }
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public ItemsListFragment() {
+        Log.e("app", "Fragment construct");
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -101,6 +119,19 @@ public abstract class ItemsListFragment<D> extends Fragment implements ListAdapt
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.e("app", "Fragment onCreate");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("app", "Fragment onDestroy");
     }
 
     @Nullable

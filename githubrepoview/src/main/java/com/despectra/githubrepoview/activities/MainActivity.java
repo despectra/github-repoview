@@ -1,6 +1,8 @@
 package com.despectra.githubrepoview.activities;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.LoaderManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setupAppBar();
         if(savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new FriendsFragment(), FriendsFragment.TAG)
+                    .add(R.id.fragment_container, new FriendsFragment(), FriendsFragment.class.getName())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         } else {
