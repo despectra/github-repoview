@@ -1,30 +1,16 @@
 package com.despectra.githubrepoview.fragments;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.R;
 import com.despectra.githubrepoview.SimpleDividerItemDecoration;
-import com.despectra.githubrepoview.Utils;
-import com.despectra.githubrepoview.adapters.ListAdapter;
-import com.despectra.githubrepoview.adapters.ReposAdapter;
-import com.despectra.githubrepoview.loaders.local.ReposLocalLoader;
-import com.despectra.githubrepoview.loaders.network.ReposLoader;
-import com.despectra.githubrepoview.models.Repo;
-import com.despectra.githubrepoview.models.User;
-import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
 import com.despectra.githubrepoview.viewmodel.RepoViewModel;
 import com.despectra.githubrepoview.viewmodel.ReposListViewModel;
 import com.despectra.githubrepoview.viewmodel.UserViewModel;
-import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * Fragment for rendering list of user repos

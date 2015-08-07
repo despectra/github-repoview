@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.despectra.githubrepoview.LoginInfo;
 import com.despectra.githubrepoview.R;
-import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.viewmodel.FriendsListViewModel;
 import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
 import com.despectra.githubrepoview.viewmodel.UserViewModel;

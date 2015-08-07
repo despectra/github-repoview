@@ -1,6 +1,5 @@
 package com.despectra.githubrepoview;
 
-import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

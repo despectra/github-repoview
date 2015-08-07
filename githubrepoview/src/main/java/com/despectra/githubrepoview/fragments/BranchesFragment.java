@@ -1,28 +1,14 @@
 package com.despectra.githubrepoview.fragments;
 
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import com.despectra.githubrepoview.ClickableViewHolder;
 import com.despectra.githubrepoview.SimpleDividerItemDecoration;
-import com.despectra.githubrepoview.Utils;
-import com.despectra.githubrepoview.adapters.BranchesAdapter;
-import com.despectra.githubrepoview.adapters.ListAdapter;
-import com.despectra.githubrepoview.loaders.local.BranchesLocalLoader;
-import com.despectra.githubrepoview.loaders.network.BranchesLoader;
-import com.despectra.githubrepoview.models.Branch;
-import com.despectra.githubrepoview.models.Repo;
-import com.despectra.githubrepoview.models.User;
 import com.despectra.githubrepoview.viewmodel.BranchViewModel;
 import com.despectra.githubrepoview.viewmodel.BranchesListViewModel;
-import com.despectra.githubrepoview.viewmodel.ItemListViewModel;
 import com.despectra.githubrepoview.viewmodel.RepoViewModel;
 import com.despectra.githubrepoview.viewmodel.UserViewModel;
-import com.google.gson.Gson;
-
-import java.util.List;
 
 /**
  * fragment for rendering list of repo branches

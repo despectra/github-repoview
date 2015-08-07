@@ -1,7 +1,5 @@
 package com.despectra.githubrepoview.viewmodel;
 
-import android.os.Parcelable;
-
 import com.despectra.githubrepoview.Utils;
 import com.google.gson.Gson;
 
