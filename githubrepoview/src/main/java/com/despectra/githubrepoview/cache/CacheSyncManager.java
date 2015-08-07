@@ -4,16 +4,18 @@ import com.despectra.githubrepoview.SetOperations;
 import com.despectra.githubrepoview.cache.db.DatabaseDao;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Class for refreshing local cache (realm database)
  * @param <D> type of item
  * @param <K> type of unique key field
  */
-public abstract class CacheSyncManager<D, K> {
+public abstract class CacheSyncManager<D, K extends Comparable> {
 
     /**
      * Database write strategy implementation to perform write operations
@@ -75,7 +77,7 @@ public abstract class CacheSyncManager<D, K> {
      * @return mapping
      */
     private Map<K, D> getMapFromItemsList(List<D> items) {
-        Map<K, D> idsMap = new HashMap<>();
+        Map<K, D> idsMap = new TreeMap<>();
         for(D item : items) {
             idsMap.put(getItemUniqueKey(item), item);
         }

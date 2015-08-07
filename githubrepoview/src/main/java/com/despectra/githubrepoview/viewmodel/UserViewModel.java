@@ -33,6 +33,10 @@ public class UserViewModel extends ItemViewModel<User> {
         return infoBuilder.length() > 0 ? infoBuilder.toString() : "<no data>";
     }
 
+    public String getAvatarUrl() {
+        return mModel.getAvatarUrl();
+    }
+
     public static UserViewModel deserialize(String json) {
         Gson gson = Utils.getDefaultGsonInstance();
         return new UserViewModel(gson.fromJson(json, User.class));

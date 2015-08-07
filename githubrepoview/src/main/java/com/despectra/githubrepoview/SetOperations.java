@@ -1,5 +1,6 @@
 package com.despectra.githubrepoview;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,10 +16,12 @@ public class SetOperations {
      * @return A and B
      */
     public static <T> Set<T> intersection(Set<T> a, Set<T> b) {
-        Set<T> tmp = new TreeSet<T>();
-        for (T x : a)
-            if (b.contains(x))
+        Set<T> tmp = new TreeSet<>();
+        for (T x : a) {
+            if (b.contains(x)) {
                 tmp.add(x);
+            }
+        }
         return tmp;
     }
 
@@ -30,7 +33,7 @@ public class SetOperations {
      * @return  A \ B
      */
     public static <T> Set<T> difference(Set<T> a, Set<T> b) {
-        Set<T> tmp = new TreeSet<T>(a);
+        Set<T> tmp = new TreeSet<>(a);
         tmp.removeAll(b);
         return tmp;
     }

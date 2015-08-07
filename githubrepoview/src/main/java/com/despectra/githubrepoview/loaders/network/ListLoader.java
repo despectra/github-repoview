@@ -31,7 +31,7 @@ public abstract class ListLoader<D> extends GitHubApiLoader<List<D>> {
         mDao.open();
         List<D> localItems = mDao.getItems(getLocalWhereCols(), getLocalWhereColsValues());
 
-        CacheSyncManager<D, ?> syncManager = getCacheSyncManager();
+        CacheSyncManager<D, ? extends Comparable> syncManager = getCacheSyncManager();
         try {
             syncManager.sync(networkItems, localItems);
         } finally {
@@ -64,5 +64,5 @@ public abstract class ListLoader<D> extends GitHubApiLoader<List<D>> {
     /**
      * @return sync manager for refreshing cache
      */
-    protected abstract CacheSyncManager<D, ?> getCacheSyncManager();
+    protected abstract CacheSyncManager<D, ? extends Comparable> getCacheSyncManager();
 }
